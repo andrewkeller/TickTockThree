@@ -1,0 +1,17 @@
+# Files for Git to ignore:
+
+# Build results:
+
+Builds*
+*.debug
+*.debug.app
+Debug*/Debug*.exe
+Debug*/Debug*\ Libs
+
+# REAL Studio window state file:
+
+*.rbuistate
+
+# Obsolete class files:
+
+*.obsolete
