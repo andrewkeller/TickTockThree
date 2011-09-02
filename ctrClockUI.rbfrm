@@ -27,9 +27,9 @@ Begin ContainerControl ctrClockUI
       AcceptFocus     =   False
       AutoDeactivate  =   True
       BackColor       =   &c000000
-      Bevel           =   0
+      Bevel           =   3
       Bold            =   False
-      ButtonType      =   0
+      ButtonType      =   1
       Caption         =   "Project Title"
       CaptionAlign    =   3
       CaptionDelta    =   0
@@ -53,13 +53,13 @@ Begin ContainerControl ctrClockUI
       LockRight       =   True
       LockTop         =   True
       MenuValue       =   0
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       TextColor       =   &c000000
       TextFont        =   "System"
-      TextSize        =   ""
+      TextSize        =   25
       TextUnit        =   0
       Top             =   6
       Underline       =   False
@@ -85,7 +85,7 @@ Begin ContainerControl ctrClockUI
       LockRight       =   True
       LockTop         =   False
       Multiline       =   ""
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   1
       TabPanelIndex   =   0
@@ -105,5 +105,18 @@ End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h0
+		Function Label() As String
+		  Return bvlAction.Caption
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Label(Assigns new_value As String)
+		  bvlAction.Caption = new_value
+		End Sub
+	#tag EndMethod
+
+
 #tag EndWindowCode
 
