@@ -5,6 +5,7 @@ Class=App;App.rbbas;&h5066F502;&h0;false
 Window=frmMain;frmMain.rbfrm;&h175FC131;&h0;false
 MenuBar=MainMenu;MainMenu.rbmnu;&hF84C59A;&h0;false
 BuildSteps=Build Automation;Build Automation.rbbas;&h55C94B11;&h0;false
+Window=ctrClockUI;ctrClockUI.rbfrm;&h122F64B1;&h0;false
 DefaultWindow=frmMain
 AppMenuBar=MainMenu
 MajorVersion=1
