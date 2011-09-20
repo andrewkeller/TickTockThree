@@ -1,5 +1,5 @@
 #tag Window
-Begin ContainerControl ctrClockUI
+Begin ContainerControl ClockButton
    AcceptFocus     =   ""
    AcceptTabs      =   True
    AutoDeactivate  =   True
@@ -11,7 +11,7 @@ Begin ContainerControl ctrClockUI
    Height          =   212
    HelpTag         =   ""
    InitialParent   =   ""
-   Left            =   3.2e+1
+   Left            =   32
    LockBottom      =   ""
    LockLeft        =   ""
    LockRight       =   ""
@@ -19,14 +19,14 @@ Begin ContainerControl ctrClockUI
    TabIndex        =   0
    TabPanelIndex   =   0
    TabStop         =   True
-   Top             =   3.2e+1
+   Top             =   32
    UseFocusRing    =   ""
    Visible         =   True
    Width           =   212
    Begin BevelButton bvlAction
       AcceptFocus     =   False
       AutoDeactivate  =   True
-      BackColor       =   &c000000
+      BackColor       =   "&c000000"
       Bevel           =   3
       Bold            =   False
       ButtonType      =   1
@@ -57,7 +57,7 @@ Begin ContainerControl ctrClockUI
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      TextColor       =   &c000000
+      TextColor       =   "&c000000"
       TextFont        =   "System"
       TextSize        =   25
       TextUnit        =   0
@@ -105,6 +105,18 @@ End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h0
+		Function IsPressed() As Boolean
+		  Return bvlAction.Value
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IsPressed(Assigns new_value As Boolean)
+		  bvlAction.Value = new_value
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function Label() As String
 		  Return bvlAction.Caption
