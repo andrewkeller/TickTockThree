@@ -55,6 +55,14 @@ End
 #tag EndWindow
 
 #tag WindowCode
+	#tag MenuHandler
+		Function FileClose() As Boolean Handles FileClose.Action
+			Self.Close
+			Return True
+		End Function
+	#tag EndMenuHandler
+
+
 #tag EndWindowCode
 
 #tag Events ClockGrid1
