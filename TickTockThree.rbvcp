@@ -5,6 +5,7 @@ Class=App;App.rbbas;&h5066F502;&h0;false
 MenuBar=MainMenu;MainMenu.rbmnu;&hF84C59A;&h0;false
 Window=ClockWindow;ClockWindow.rbfrm;&h175FC131;&h0;false
 Window=SingletonClockWindow;SingletonClockWindow.rbfrm;&h57D06FFF;&h0;false
+Window=EnterStringWindow;EnterStringWindow.rbfrm;&h2F99DFFF;&h0;false
 BuildSteps=Build Automation;Build Automation.rbbas;&h55C94B11;&h0;false
 Window=ClockButton;ClockButton.rbfrm;&h122F64B1;&h0;false
 Window=ClockGrid;ClockGrid.rbfrm;&h1BB487FF;&h0;false

@@ -22,7 +22,7 @@ Begin Window SingletonClockWindow
    Placement       =   0
    Resizeable      =   True
    Title           =   "Singleton Clock Window"
-   Visible         =   True
+   Visible         =   False
    Width           =   2.4e+2
    Begin BevelButton bvlAction
       AcceptFocus     =   False
@@ -133,6 +133,19 @@ End
 	#tag EndMenuHandler
 
 
+	#tag Method, Flags = &h0
+		Function DisplayName() As String
+		  Return bvlAction.Caption
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DisplayName(Assigns new_name As String)
+		  bvlAction.Caption = new_name
+		  Self.Title = Trim( new_name ) + " Timer"
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
 		Protected Sub RefreshLabel()
 		  Dim h, m, s As Integer
@@ -177,6 +190,31 @@ End
 		    
 		  End If
 		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lblTotalTime
+	#tag Event
+		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
+		  base.Append New MenuItem( "Change name..." )
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
+		  If hitItem.Text = "Change name..." Then
+		    
+		    Dim new_name As String = DisplayName
+		    
+		    If EnterStringWindow.GetString( "Change name", "Please enter the new name for this window:", new_name ) Then
+		      
+		      Self.DisplayName = new_name
+		      
+		    End If
+		    
+		    Return True
+		    
+		  End If
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag Events tmrRefresh
