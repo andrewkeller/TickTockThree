@@ -98,8 +98,8 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		 Shared Sub EnforceGlobalExclusion(base_obj As SingletonClockWindow)
+	#tag Method, Flags = &h1
+		Protected Shared Sub EnforceGlobalExclusion(base_obj As SingletonClockWindow)
 		  If Not ( base_obj Is Nil ) Then
 		    
 		    If base_obj.ParticipatesInGlobalExclusion Then

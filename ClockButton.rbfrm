@@ -20,7 +20,7 @@ Begin ContainerControl ClockButton
    TabPanelIndex   =   0
    TabStop         =   True
    Top             =   32
-   UseFocusRing    =   ""
+   UseFocusRing    =   False
    Visible         =   True
    Width           =   212
    Begin BevelButton bvlAction
