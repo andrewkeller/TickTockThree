@@ -101,10 +101,35 @@ Begin ContainerControl ClockButton
       Visible         =   True
       Width           =   200
    End
+   Begin Timer tmrRefresh
+      Height          =   32
+      Index           =   -2147483648
+      Left            =   281
+      LockedInPosition=   False
+      Mode            =   0
+      Period          =   1000
+      Scope           =   0
+      TabPanelIndex   =   0
+      Top             =   24
+      Width           =   32
+   End
 End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h0
+		Function DisplayName() As String
+		  Return bvlAction.Caption
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DisplayName(Assigns new_value As String)
+		  bvlAction.Caption = new_value
+		  Me.Title = Trim( new_value ) + " Timer"
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function IsPressed() As Boolean
 		  Return bvlAction.Value
@@ -117,18 +142,98 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Label() As String
-		  Return bvlAction.Caption
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Label(Assigns new_value As String)
-		  bvlAction.Caption = new_value
+	#tag Method, Flags = &h1
+		Protected Sub RefreshLabel()
+		  Dim h, m, s As Integer
+		  Dim cursor As DurationKFS = p_clock
+		  
+		  h = cursor.IntegerValue( DurationKFS.kHours )
+		  
+		  cursor = cursor - New DurationKFS( h, DurationKFS.kHours )
+		  
+		  m = cursor.IntegerValue( DurationKFS.kMinutes )
+		  
+		  cursor = cursor - New DurationKFS( m, DurationKFS.kMinutes )
+		  
+		  s = cursor.IntegerValue( DurationKFS.kSeconds )
+		  
+		  lblTotalTime.Text = Format( h, "00" ) + " : " + Format( m, "00" ) + " : " + Format( s, "00" )
+		  
 		End Sub
 	#tag EndMethod
 
 
+	#tag Hook, Flags = &h0
+		Event LabelChanged()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event TimerStarted()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event TimerStopped()
+	#tag EndHook
+
+
+	#tag Property, Flags = &h1
+		Protected p_clock As DurationKFS
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
+#tag Events bvlAction
+	#tag Event
+		Sub Action()
+		  If p_clock Is Nil Then p_clock = New DurationKFS
+		  
+		  If Me.Value Then
+		    
+		    p_clock.Start
+		    tmrRefresh.Mode = Timer.ModeMultiple
+		    RaiseEvent TimerStarted
+		    
+		  Else
+		    
+		    p_clock.Stop
+		    tmrRefresh.Mode = Timer.ModeOff
+		    RefreshLabel
+		    RaiseEvent TimerStopped
+		    
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lblTotalTime
+	#tag Event
+		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
+		  base.Append New MenuItem( "Change name..." )
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
+		  If hitItem.Text = "Change name..." Then
+		    
+		    Dim new_name As String = Self.DisplayName
+		    
+		    If EnterStringWindow.GetString( "Change name", "Please enter the new name for this window:", new_name ) Then
+		      
+		      Self.DisplayName = new_name
+		      
+		    End If
+		    
+		    Return True
+		    
+		  End If
+		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events tmrRefresh
+	#tag Event
+		Sub Action()
+		  RefreshLabel
+		End Sub
+	#tag EndEvent
+#tag EndEvents

@@ -31,15 +31,15 @@ End
 		Sub Open()
 		  Dim c1 As New ClockButton
 		  c1.EmbedWithin Self, 20, 14
-		  c1.Label = "SFS"
+		  c1.DisplayName = "SFS"
 		  
 		  Dim c2 As New ClockButton
 		  c2.EmbedWithin Self, c1.Left + c1.Width + 12, 14
-		  c2.Label = "Multiboard"
+		  c2.DisplayName = "Multiboard"
 		  
 		  Dim c3 As New ClockButton
 		  c3.EmbedWithin Self, c2.Left + c2.Width + 12, 14
-		  c3.Label = "HHS"
+		  c3.DisplayName = "HHS"
 		  
 		End Sub
 	#tag EndEvent
