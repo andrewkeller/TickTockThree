@@ -146,6 +146,18 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function IsPressed() As Boolean
+		  Return bvlAction.Value
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IsPressed(Assigns new_value As Boolean)
+		  bvlAction.Value = new_value
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
 		Protected Sub RefreshLabel()
 		  Dim h, m, s As Integer
