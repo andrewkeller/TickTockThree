@@ -1,6 +1,6 @@
 #tag Window
 Begin Window SingletonClockWindow
-   BackColor       =   &hFFFFFF
+   BackColor       =   "#ClockGlobals.kDefaultActiveClockColor"
    Backdrop        =   ""
    CloseButton     =   True
    Composite       =   False
@@ -65,3 +65,20 @@ End
 
 #tag EndWindowCode
 
+#tag Events ClockButton1
+	#tag Event
+		Sub LabelChanged()
+		  Self.Title = Trim( Me.DisplayName ) + " Timer"
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ClockStarted()
+		  Self.HasBackColor = True
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ClockStopped()
+		  Self.HasBackColor = False
+		End Sub
+	#tag EndEvent
+#tag EndEvents

@@ -32,18 +32,38 @@ End
 		  Dim c1 As New ClockButton
 		  c1.EmbedWithin Self, 20, 14
 		  c1.DisplayName = "SFS"
+		  AddHandler c1.ClockStarted, AddressOf ClockStartedHook
+		  AddHandler c1.ClockStopped, AddressOf ClockStoppedHook
 		  
 		  Dim c2 As New ClockButton
 		  c2.EmbedWithin Self, c1.Left + c1.Width + 12, 14
 		  c2.DisplayName = "Multiboard"
+		  AddHandler c2.ClockStarted, AddressOf ClockStartedHook
+		  AddHandler c2.ClockStopped, AddressOf ClockStoppedHook
 		  
 		  Dim c3 As New ClockButton
 		  c3.EmbedWithin Self, c2.Left + c2.Width + 12, 14
 		  c3.DisplayName = "HHS"
+		  AddHandler c3.ClockStarted, AddressOf ClockStartedHook
+		  AddHandler c3.ClockStopped, AddressOf ClockStoppedHook
 		  
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h0
+		Sub ClockStartedHook(obj As ClockButton)
+		  obj.HasBackColor = True
+		  obj.Refresh
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStoppedHook(obj As ClockButton)
+		  obj.HasBackColor = False
+		  obj.Refresh
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsPressed(index As Integer) As Boolean

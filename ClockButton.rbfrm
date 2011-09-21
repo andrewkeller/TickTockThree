@@ -3,7 +3,7 @@ Begin ContainerControl ClockButton
    AcceptFocus     =   ""
    AcceptTabs      =   True
    AutoDeactivate  =   True
-   BackColor       =   &hFFFFFF
+   BackColor       =   "#ClockGlobals.kDefaultActiveClockColor"
    Backdrop        =   ""
    Enabled         =   True
    EraseBackground =   True
@@ -96,7 +96,7 @@ Begin ContainerControl ClockButton
       TextSize        =   17
       TextUnit        =   0
       Top             =   162
-      Transparent     =   False
+      Transparent     =   True
       Underline       =   ""
       Visible         =   True
       Width           =   200
@@ -126,7 +126,7 @@ End
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
 		  bvlAction.Caption = new_value
-		  Me.Title = Trim( new_value ) + " Timer"
+		  RaiseEvent LabelChanged
 		End Sub
 	#tag EndMethod
 
@@ -164,15 +164,15 @@ End
 
 
 	#tag Hook, Flags = &h0
+		Event ClockStarted()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event ClockStopped()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
 		Event LabelChanged()
-	#tag EndHook
-
-	#tag Hook, Flags = &h0
-		Event TimerStarted()
-	#tag EndHook
-
-	#tag Hook, Flags = &h0
-		Event TimerStopped()
 	#tag EndHook
 
 
@@ -192,14 +192,15 @@ End
 		    
 		    p_clock.Start
 		    tmrRefresh.Mode = Timer.ModeMultiple
-		    RaiseEvent TimerStarted
+		    RefreshLabel
+		    RaiseEvent ClockStarted
 		    
 		  Else
 		    
 		    p_clock.Stop
 		    tmrRefresh.Mode = Timer.ModeOff
 		    RefreshLabel
-		    RaiseEvent TimerStopped
+		    RaiseEvent ClockStopped
 		    
 		  End If
 		End Sub
