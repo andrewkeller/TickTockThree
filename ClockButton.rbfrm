@@ -130,6 +130,28 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub HandleClockChanged()
+		  If p_clock Is Nil Then p_clock = New DurationKFS
+		  
+		  If bvlAction.Value Then
+		    
+		    p_clock.Start
+		    tmrRefresh.Mode = Timer.ModeMultiple
+		    RefreshLabel
+		    RaiseEvent ClockStarted
+		    
+		  Else
+		    
+		    p_clock.Stop
+		    tmrRefresh.Mode = Timer.ModeOff
+		    RefreshLabel
+		    RaiseEvent ClockStopped
+		    
+		  End If
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function IsPressed() As Boolean
 		  Return bvlAction.Value
@@ -139,6 +161,7 @@ End
 	#tag Method, Flags = &h0
 		Sub IsPressed(Assigns new_value As Boolean)
 		  bvlAction.Value = new_value
+		  HandleClockChanged
 		End Sub
 	#tag EndMethod
 
@@ -186,23 +209,7 @@ End
 #tag Events bvlAction
 	#tag Event
 		Sub Action()
-		  If p_clock Is Nil Then p_clock = New DurationKFS
-		  
-		  If Me.Value Then
-		    
-		    p_clock.Start
-		    tmrRefresh.Mode = Timer.ModeMultiple
-		    RefreshLabel
-		    RaiseEvent ClockStarted
-		    
-		  Else
-		    
-		    p_clock.Stop
-		    tmrRefresh.Mode = Timer.ModeOff
-		    RefreshLabel
-		    RaiseEvent ClockStopped
-		    
-		  End If
+		  HandleClockChanged
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -210,7 +217,6 @@ End
 	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
 		  base.Append New MenuItem( "Change name..." )
-		  Return True
 		End Function
 	#tag EndEvent
 	#tag Event

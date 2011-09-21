@@ -24,7 +24,7 @@ Begin Window SingletonClockWindow
    Title           =   "Singleton Clock Window"
    Visible         =   False
    Width           =   2.4e+2
-   Begin ClockButton ClockButton1
+   Begin ClockButton clkBtn
       AcceptFocus     =   ""
       AcceptTabs      =   True
       AutoDeactivate  =   True
@@ -55,6 +55,29 @@ End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Event
+		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
+		  Dim m As New MenuItem( "Enable Global Exclusion" )
+		  
+		  If ParticipatesInGlobalExclusion Then m.Checked = True
+		  
+		  base.Append m
+		End Function
+	#tag EndEvent
+
+	#tag Event
+		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
+		  If hitItem.Text = "Enable Global Exclusion" Then
+		    
+		    p_enable_global_exclusion = Not hitItem.Checked
+		    
+		    Return True
+		    
+		  End If
+		End Function
+	#tag EndEvent
+
+
 	#tag MenuHandler
 		Function FileClose() As Boolean Handles FileClose.Action
 			Self.Close
@@ -63,9 +86,71 @@ End
 	#tag EndMenuHandler
 
 
+	#tag Method, Flags = &h0
+		Function DisplayName() As String
+		  Return clkBtn.DisplayName
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DisplayName(Assigns new_value As String)
+		  clkBtn.DisplayName = new_value
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		 Shared Sub EnforceGlobalExclusion(base_obj As SingletonClockWindow)
+		  If Not ( base_obj Is Nil ) Then
+		    
+		    If base_obj.ParticipatesInGlobalExclusion Then
+		      
+		      For idx As Integer = WindowCount -1 DownTo 0
+		        
+		        Dim w As Window = Window( idx )
+		        
+		        If w IsA SingletonClockWindow And Not ( w Is base_obj ) Then
+		          
+		          Dim c As SingletonClockWindow = SingletonClockWindow( w )
+		          
+		          If c.ParticipatesInGlobalExclusion And c.IsPressed Then
+		            
+		            c.IsPressed = False
+		            
+		          End If
+		        End If
+		      Next
+		    End If
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsPressed() As Boolean
+		  Return clkBtn.IsPressed
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IsPressed(Assigns new_value As Boolean)
+		  clkBtn.IsPressed = new_value
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ParticipatesInGlobalExclusion() As Boolean
+		  Return p_enable_global_exclusion
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h1
+		Protected p_enable_global_exclusion As Boolean = True
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
-#tag Events ClockButton1
+#tag Events clkBtn
 	#tag Event
 		Sub LabelChanged()
 		  Self.Title = Trim( Me.DisplayName ) + " Timer"
@@ -74,6 +159,8 @@ End
 	#tag Event
 		Sub ClockStarted()
 		  Self.HasBackColor = True
+		  
+		  EnforceGlobalExclusion Self
 		End Sub
 	#tag EndEvent
 	#tag Event
