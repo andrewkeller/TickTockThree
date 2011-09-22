@@ -71,7 +71,7 @@ Protected Class ClockDataObject
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Sub RegisterForClockObjectUpdates(target As ClockSetEventReceiver)
+		 Shared Sub RegisterForClockSetUpdates(target As ClockSetEventReceiver)
 		  If Not ( target Is Nil ) Then
 		    
 		    p_autoupdate_pool.Append target
@@ -123,7 +123,7 @@ Protected Class ClockDataObject
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Sub UnregisterForClockObjectUpdates(target As ClockSetEventReceiver)
+		 Shared Sub UnregisterForClockSetUpdates(target As ClockSetEventReceiver)
 		  For idx As Integer = UBound( p_autoupdate_pool ) DownTo 0
 		    
 		    If p_autoupdate_pool(idx) Is Nil Or p_autoupdate_pool(idx) Is target Then p_autoupdate_pool.Remove idx

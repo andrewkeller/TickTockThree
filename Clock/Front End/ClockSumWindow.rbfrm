@@ -330,13 +330,13 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Close()
-		  ClockDataObject.UnregisterForClockObjectUpdates Self
+		  ClockDataObject.UnregisterForClockSetUpdates Self
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Open()
-		  ClockDataObject.RegisterForClockObjectUpdates Self
+		  ClockDataObject.RegisterForClockSetUpdates Self
 		  UpdateSum
 		End Sub
 	#tag EndEvent
