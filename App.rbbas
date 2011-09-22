@@ -44,6 +44,15 @@ Inherits Application
 		End Function
 	#tag EndMenuHandler
 
+	#tag MenuHandler
+		Function StatisticsSumOfTheClocks() As Boolean Handles StatisticsSumOfTheClocks.Action
+			Dim w As New ClockSumWindow
+			w.Show
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
 
 	#tag Method, Flags = &h0
 		Function UserWantsToSaveSingletonWindows() As Boolean

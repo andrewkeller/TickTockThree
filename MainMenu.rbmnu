@@ -107,5 +107,17 @@ Begin Menu MainMenu
          AutoEnable = True
       End
    End
+   Begin MenuItem StatisticsMenu
+      SpecialMenu = 0
+      Text = "Statistics"
+      Index = -2147483648
+      AutoEnable = True
+      Begin MenuItem StatisticsSumOfTheClocks
+         SpecialMenu = 0
+         Text = "Sum of the Clocks"
+         Index = -2147483648
+         AutoEnable = True
+      End
+   End
 End
 #tag EndMenu
