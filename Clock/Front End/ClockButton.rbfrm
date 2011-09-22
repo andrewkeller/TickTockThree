@@ -118,22 +118,28 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h0
+		Attributes( Hidden = True )  Sub Constructor()
+		  Super.Constructor
+		  p_clock = New ClockDataObject
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function DisplayName() As String
-		  Return bvlAction.Caption
+		  Return p_clock.DisplayName
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
+		  p_clock.DisplayName = new_value
 		  bvlAction.Caption = new_value
 		  RaiseEvent LabelChanged
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub HandleClockChanged()
-		  If p_clock Is Nil Then p_clock = New DurationKFS
-		  
+		Protected Sub HandleClockStateChanged()
 		  If bvlAction.Value Then
 		    
 		    p_clock.Start
@@ -161,14 +167,14 @@ End
 	#tag Method, Flags = &h0
 		Sub IsPressed(Assigns new_value As Boolean)
 		  bvlAction.Value = new_value
-		  HandleClockChanged
+		  HandleClockStateChanged
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
 		Protected Sub RefreshLabel()
 		  Dim h, m, s As Integer
-		  Dim cursor As DurationKFS = p_clock
+		  Dim cursor As DurationKFS = p_clock.Value
 		  
 		  h = cursor.IntegerValue( DurationKFS.kHours )
 		  
@@ -200,7 +206,7 @@ End
 
 
 	#tag Property, Flags = &h1
-		Protected p_clock As DurationKFS
+		Protected p_clock As ClockDataObject
 	#tag EndProperty
 
 
@@ -209,7 +215,7 @@ End
 #tag Events bvlAction
 	#tag Event
 		Sub Action()
-		  HandleClockChanged
+		  HandleClockStateChanged
 		End Sub
 	#tag EndEvent
 #tag EndEvents

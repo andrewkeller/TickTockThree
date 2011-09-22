@@ -22,7 +22,7 @@ Inherits Application
 		    
 		    If Not AskReviewChangesWindow.GetUserChoice( "", _
 		      "You have "+Str(sng_cnt)+" singleton clock windows open.  Would you like to merge them into documents before exiting?", _
-		      "Singleton clock windows cannot be saved on their own.  If you do not merge them into a document, their data will be lost", _
+		      "Singleton clock windows cannot be saved on their own.  If you do not merge them into a document, their data will be lost.", _
 		      p_user_wants_to_save_singleton_windows ) Then
 		      
 		      Return True
