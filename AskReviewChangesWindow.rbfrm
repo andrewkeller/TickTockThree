@@ -1,5 +1,5 @@
 #tag Window
-Begin Window EnterStringWindow
+Begin Window AskReviewChangesWindow
    BackColor       =   &hFFFFFF
    Backdrop        =   ""
    CloseButton     =   False
@@ -7,7 +7,7 @@ Begin Window EnterStringWindow
    Frame           =   1
    FullScreen      =   False
    HasBackColor    =   False
-   Height          =   1.47e+2
+   Height          =   1.59e+2
    ImplicitInstance=   True
    LiveResize      =   True
    MacProcID       =   0
@@ -17,26 +17,53 @@ Begin Window EnterStringWindow
    MenuBar         =   ""
    MenuBarVisible  =   True
    MinHeight       =   64
-   MinimizeButton  =   False
+   MinimizeButton  =   True
    MinWidth        =   64
    Placement       =   0
-   Resizeable      =   True
+   Resizeable      =   False
    Title           =   "Untitled"
    Visible         =   False
-   Width           =   5.22e+2
+   Width           =   5.74e+2
+   Begin Canvas Canvas1
+      AcceptFocus     =   ""
+      AcceptTabs      =   ""
+      AutoDeactivate  =   True
+      Backdrop        =   ""
+      DoubleBuffer    =   False
+      Enabled         =   True
+      EraseBackground =   True
+      Height          =   32
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   20
+      LockBottom      =   ""
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   ""
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Top             =   14
+      UseFocusRing    =   True
+      Visible         =   True
+      Width           =   32
+   End
    Begin Label lblPrompt
       AutoDeactivate  =   True
-      Bold            =   ""
+      Bold            =   True
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Height          =   20
+      Height          =   32
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   20
-      LockBottom      =   True
+      Left            =   84
+      LockBottom      =   ""
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
@@ -44,7 +71,7 @@ Begin Window EnterStringWindow
       Multiline       =   True
       Scope           =   0
       Selectable      =   False
-      TabIndex        =   0
+      TabIndex        =   1
       TabPanelIndex   =   0
       Text            =   "Untitled"
       TextAlign       =   0
@@ -56,95 +83,56 @@ Begin Window EnterStringWindow
       Transparent     =   False
       Underline       =   ""
       Visible         =   True
-      Width           =   482
+      Width           =   470
    End
-   Begin TextField txtInput
-      AcceptTabs      =   ""
-      Alignment       =   0
+   Begin Label lblExplanation
       AutoDeactivate  =   True
-      AutomaticallyCheckSpelling=   False
-      BackColor       =   &hFFFFFF
       Bold            =   ""
-      Border          =   True
-      CueText         =   ""
       DataField       =   ""
       DataSource      =   ""
       Enabled         =   True
-      Format          =   ""
-      Height          =   22
+      Height          =   34
       HelpTag         =   ""
       Index           =   -2147483648
+      InitialParent   =   ""
       Italic          =   ""
-      Left            =   20
-      LimitText       =   0
-      LockBottom      =   True
+      Left            =   84
+      LockBottom      =   ""
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
-      LockTop         =   False
-      Mask            =   ""
-      Password        =   ""
-      ReadOnly        =   ""
+      LockTop         =   True
+      Multiline       =   True
       Scope           =   0
-      TabIndex        =   1
+      Selectable      =   False
+      TabIndex        =   2
       TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   ""
+      Text            =   "Untitled"
+      TextAlign       =   0
       TextColor       =   &h000000
       TextFont        =   "System"
       TextSize        =   0
       TextUnit        =   0
-      Top             =   46
+      Top             =   58
+      Transparent     =   False
       Underline       =   ""
-      UseFocusRing    =   True
       Visible         =   True
-      Width           =   482
+      Width           =   470
    End
-   Begin PushButton cmdOK
+   Begin PushButton cmdReview
       AutoDeactivate  =   True
       Bold            =   ""
       ButtonStyle     =   0
       Cancel          =   ""
-      Caption         =   "OK"
+      Caption         =   "Review Changes..."
       Default         =   True
       Enabled         =   True
-      Height          =   22
+      Height          =   20
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   422
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      Scope           =   0
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0
-      TextUnit        =   0
-      Top             =   105
-      Underline       =   ""
-      Visible         =   True
-      Width           =   80
-   End
-   Begin PushButton PushButton2
-      AutoDeactivate  =   True
-      Bold            =   ""
-      ButtonStyle     =   0
-      Cancel          =   True
-      Caption         =   "Cancel"
-      Default         =   ""
-      Enabled         =   True
-      Height          =   22
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   ""
-      Left            =   330
+      Left            =   400
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
@@ -157,40 +145,96 @@ Begin Window EnterStringWindow
       TextFont        =   "System"
       TextSize        =   0
       TextUnit        =   0
-      Top             =   105
+      Top             =   119
+      Underline       =   ""
+      Visible         =   True
+      Width           =   154
+   End
+   Begin PushButton cmdCancel
+      AutoDeactivate  =   True
+      Bold            =   ""
+      ButtonStyle     =   0
+      Cancel          =   True
+      Caption         =   "Cancel"
+      Default         =   False
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   ""
+      Left            =   308
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0
+      TextUnit        =   0
+      Top             =   119
       Underline       =   ""
       Visible         =   True
       Width           =   80
+   End
+   Begin PushButton cmdDiscard
+      AutoDeactivate  =   True
+      Bold            =   ""
+      ButtonStyle     =   0
+      Cancel          =   ""
+      Caption         =   "Discard Changes"
+      Default         =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   ""
+      Left            =   84
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   ""
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0
+      TextUnit        =   0
+      Top             =   119
+      Underline       =   ""
+      Visible         =   True
+      Width           =   141
    End
 End
 #tag EndWindow
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		 Shared Function GetString(title As String, prompt As String, ByRef result As String) As Boolean
-		  Dim w As New EnterStringWindow
+		 Shared Function GetUserChoice(title As String, prompt As String, explanation As String, ByRef review_changes As Boolean) As Boolean
+		  Dim w As New AskReviewChangesWindow
 		  
 		  w.Title = title
+		  
 		  w.lblPrompt.Text = prompt
-		  w.txtInput.Text = result
-		  w.txtInput.SelectAll
+		  w.lblExplanation.Text = explanation
 		  
 		  w.ShowModal
 		  
-		  result = w.txtInput.Text
+		  review_changes = w.p_button_pressed = w.cmdReview
 		  
-		  Dim rtn_val As Boolean = w.p_button_pressed = w.cmdOK
+		  Dim rtn_val As Boolean = Not ( w.p_button_pressed = w.cmdCancel )
 		  
 		  w.Close
 		  
 		  Return rtn_val
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h1
-		Protected Sub UpdateButtons()
-		  cmdOK.Enabled = txtInput.Text <> ""
-		End Sub
 	#tag EndMethod
 
 
@@ -201,14 +245,14 @@ End
 
 #tag EndWindowCode
 
-#tag Events txtInput
+#tag Events Canvas1
 	#tag Event
-		Function KeyDown(Key As String) As Boolean
-		  UpdateButtons
-		End Function
+		Sub Paint(g As Graphics)
+		  g.DrawCautionIcon 0, 0
+		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events cmdOK
+#tag Events cmdReview
 	#tag Event
 		Sub Action()
 		  p_button_pressed = Me
@@ -216,7 +260,15 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events PushButton2
+#tag Events cmdCancel
+	#tag Event
+		Sub Action()
+		  p_button_pressed = Me
+		  Self.Hide
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events cmdDiscard
 	#tag Event
 		Sub Action()
 		  p_button_pressed = Me

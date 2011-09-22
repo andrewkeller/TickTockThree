@@ -18,15 +18,20 @@ Inherits Application
 		    End If
 		  Next
 		  
-		  If grp_cnt + sng_cnt > 0 Then
+		  If sng_cnt > 1 Then
 		    
-		    Return MsgBox( "This application cannot currently save any changes.  Are you sure you want to quit?", 1 + 48 ) = 2
-		    
-		  Else
-		    
-		    Return False
-		    
+		    If Not AskReviewChangesWindow.GetUserChoice( "", _
+		      "You have "+Str(sng_cnt)+" singleton clock windows open.  Would you like to merge them into documents before exiting?", _
+		      "Singleton clock windows cannot be saved on their own.  If you do not merge them into a document, their data will be lost", _
+		      p_user_wants_to_save_singleton_windows ) Then
+		      
+		      Return True
+		      
+		    End If
 		  End If
+		  
+		  Return False
+		  
 		End Function
 	#tag EndEvent
 
@@ -38,6 +43,18 @@ Inherits Application
 			Return True
 		End Function
 	#tag EndMenuHandler
+
+
+	#tag Method, Flags = &h0
+		Function UserWantsToSaveSingletonWindows() As Boolean
+		  Return p_user_wants_to_save_singleton_windows
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h1
+		Protected p_user_wants_to_save_singleton_windows As Boolean
+	#tag EndProperty
 
 
 	#tag Constant, Name = kEditClear, Type = String, Dynamic = False, Default = \"&Delete", Scope = Public
