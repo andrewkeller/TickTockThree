@@ -354,6 +354,8 @@ End
 		    
 		    cdao.RegisterForClockObjectUpdates Self
 		    
+		    lstClocks.Sort
+		    
 		  End If
 		End Sub
 	#tag EndMethod
@@ -384,6 +386,8 @@ End
 		      
 		    End If
 		  Next
+		  
+		  lstClocks.Sort
 		End Sub
 	#tag EndMethod
 
@@ -412,6 +416,8 @@ End
 		  Next
 		  
 		  If something_changed Then
+		    
+		    lstClocks.Sort
 		    
 		    UpdateSum
 		    
