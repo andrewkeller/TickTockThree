@@ -1,5 +1,5 @@
 #tag Window
-Begin Window ClockSumWindow Implements ClockSetEventReceiver
+Begin Window ClockSumWindow Implements ClockSetEventReceiver, ClockEventReceiver
    BackColor       =   &hFFFFFF
    Backdrop        =   ""
    CloseButton     =   True
@@ -315,7 +315,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver
    Begin Timer tmrRefresh
       Height          =   32
       Index           =   -2147483648
-      Left            =   677
+      Left            =   664
       LockedInPosition=   False
       Mode            =   2
       Period          =   1000
@@ -352,6 +352,8 @@ End
 		    lstClocks.RowTag( lstClocks.LastIndex ) = cdao
 		    lstClocks.Cell( lstClocks.LastIndex, 1 ) = cdao.Value.ShortHumanReadableStringValue( DurationKFS.kSeconds )
 		    
+		    cdao.RegisterForClockObjectUpdates Self
+		    
 		  End If
 		End Sub
 	#tag EndMethod
@@ -367,6 +369,29 @@ End
 		      
 		    End If
 		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockMessageUpdated(cdao As ClockDataObject)
+		  // Part of the ClockEventReceiver interface.
+		  
+		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		    
+		    If ClockDataObject( lstClocks.RowTag( idx ) ) Is cdao Then
+		      
+		      lstClocks.Cell( idx, 0 ) = cdao.DisplayName
+		      
+		    End If
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockValueUpdated(cdao As ClockDataObject)
+		  // Part of the ClockEventReceiver interface.
+		  
+		  UpdateNumbers
 		End Sub
 	#tag EndMethod
 

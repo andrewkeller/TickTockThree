@@ -45,6 +45,12 @@ Protected Class ClockDataObject
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
 		  p_displayname = new_value
+		  
+		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		    
+		    t.ClockMessageUpdated Me
+		    
+		  Next
 		End Sub
 	#tag EndMethod
 
@@ -71,10 +77,23 @@ Protected Class ClockDataObject
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub RegisterForClockObjectUpdates(target As ClockEventReceiver)
+		  If Not ( target Is Nil ) Then
+		    
+		    p_autoupdate_obj_pool.Append target
+		    
+		    target.ClockMessageUpdated Me
+		    target.ClockValueUpdated Me
+		    
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		 Shared Sub RegisterForClockSetUpdates(target As ClockSetEventReceiver)
 		  If Not ( target Is Nil ) Then
 		    
-		    p_autoupdate_pool.Append target
+		    p_autoupdate_set_pool.Append target
 		    
 		    For Each v As Variant In p_cdao_pool.Values
 		      
@@ -102,7 +121,7 @@ Protected Class ClockDataObject
 		    
 		    p_cdao_pool.Value( cdao.p_id ) = New WeakRef( cdao )
 		    
-		    For Each t As ClockSetEventReceiver In p_autoupdate_pool
+		    For Each t As ClockSetEventReceiver In p_autoupdate_set_pool
 		      t.ClockCreated cdao
 		    Next
 		    
@@ -123,10 +142,20 @@ Protected Class ClockDataObject
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Sub UnregisterForClockSetUpdates(target As ClockSetEventReceiver)
-		  For idx As Integer = UBound( p_autoupdate_pool ) DownTo 0
+		Sub UnregisterForClockObjectUpdates(target As ClockEventReceiver)
+		  For idx As Integer = UBound( p_autoupdate_obj_pool ) DownTo 0
 		    
-		    If p_autoupdate_pool(idx) Is Nil Or p_autoupdate_pool(idx) Is target Then p_autoupdate_pool.Remove idx
+		    If p_autoupdate_obj_pool(idx) Is Nil Or p_autoupdate_obj_pool(idx) Is target Then p_autoupdate_obj_pool.Remove idx
+		    
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		 Shared Sub UnregisterForClockSetUpdates(target As ClockSetEventReceiver)
+		  For idx As Integer = UBound( p_autoupdate_set_pool ) DownTo 0
+		    
+		    If p_autoupdate_set_pool(idx) Is Nil Or p_autoupdate_set_pool(idx) Is target Then p_autoupdate_set_pool.Remove idx
 		    
 		  Next
 		End Sub
@@ -142,7 +171,7 @@ Protected Class ClockDataObject
 		      
 		    End If
 		    
-		    For Each t As ClockSetEventReceiver In p_autoupdate_pool
+		    For Each t As ClockSetEventReceiver In p_autoupdate_set_pool
 		      t.ClockDestroyed cdao
 		    Next
 		    
@@ -158,7 +187,11 @@ Protected Class ClockDataObject
 
 
 	#tag Property, Flags = &h1
-		Protected Shared p_autoupdate_pool() As ClockSetEventReceiver
+		Protected p_autoupdate_obj_pool() As ClockEventReceiver
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Shared p_autoupdate_set_pool() As ClockSetEventReceiver
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
