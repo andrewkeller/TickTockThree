@@ -7,7 +7,7 @@ Begin Window SingletonClockWindow
    Frame           =   0
    FullScreen      =   False
    HasBackColor    =   False
-   Height          =   2.34e+2
+   Height          =   1.43e+2
    ImplicitInstance=   False
    LiveResize      =   True
    MacProcID       =   0
@@ -33,7 +33,7 @@ Begin Window SingletonClockWindow
       Enabled         =   True
       EraseBackground =   True
       HasBackColor    =   False
-      Height          =   212
+      Height          =   121
       HelpTag         =   ""
       InitialParent   =   ""
       Left            =   14
