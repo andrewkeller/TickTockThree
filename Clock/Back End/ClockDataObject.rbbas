@@ -36,6 +36,18 @@ Protected Class ClockDataObject
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function IsRunning() As Boolean
+		  Return p_clock.IsRunning
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IsRunning(Assigns new_value As Boolean)
+		  p_clock.IsRunning = new_value
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Start()
 		  p_clock.Start
 		End Sub

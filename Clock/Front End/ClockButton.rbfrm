@@ -140,7 +140,7 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub HandleClockStateChanged()
-		  If bvlAction.Value Then
+		  If p_clock.IsRunning Then
 		    
 		    p_clock.Start
 		    tmrRefresh.Mode = Timer.ModeMultiple
@@ -160,12 +160,13 @@ End
 
 	#tag Method, Flags = &h0
 		Function IsPressed() As Boolean
-		  Return bvlAction.Value
+		  Return p_clock.IsRunning
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub IsPressed(Assigns new_value As Boolean)
+		  p_clock.IsRunning = new_value
 		  bvlAction.Value = new_value
 		  HandleClockStateChanged
 		End Sub
@@ -215,6 +216,7 @@ End
 #tag Events bvlAction
 	#tag Event
 		Sub Action()
+		  p_clock.IsRunning = Me.Value
 		  HandleClockStateChanged
 		End Sub
 	#tag EndEvent
