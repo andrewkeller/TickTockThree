@@ -35,6 +35,7 @@ Begin Window ClockWindow
       HasBackColor    =   False
       Height          =   246
       HelpTag         =   ""
+      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True
