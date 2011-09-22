@@ -1,5 +1,5 @@
 #tag Window
-Begin Window ClockSumWindow Implements ClockSetEventReceiver, ClockEventReceiver
+Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
    BackColor       =   &hFFFFFF
    Backdrop        =   ""
    CloseButton     =   True
@@ -193,7 +193,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver, ClockEventReceiver
    Begin BevelButton BevelButton1
       AcceptFocus     =   False
       AutoDeactivate  =   True
-      BackColor       =   &c000000
+      BackColor       =   "&c000000"
       Bevel           =   0
       Bold            =   False
       ButtonType      =   0
@@ -224,7 +224,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver, ClockEventReceiver
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
-      TextColor       =   &c000000
+      TextColor       =   "&c000000"
       TextFont        =   "System"
       TextSize        =   ""
       TextUnit        =   0
@@ -375,7 +375,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockMessageUpdated(cdao As ClockDataObject)
+		Sub ClockMessageChanged(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
 		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
@@ -392,7 +392,21 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockValueUpdated(cdao As ClockDataObject)
+		Sub ClockStarted(cdao As ClockDataObject)
+		  // Part of the ClockEventReceiver interface.
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStopped(cdao As ClockDataObject)
+		  // Part of the ClockEventReceiver interface.
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockValueChanged(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
 		  UpdateNumbers

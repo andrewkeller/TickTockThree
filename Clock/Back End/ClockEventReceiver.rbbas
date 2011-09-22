@@ -1,13 +1,25 @@
 #tag Interface
 Protected Interface ClockEventReceiver
 	#tag Method, Flags = &h0
-		Sub ClockMessageUpdated(cdao As ClockDataObject)
+		Sub ClockMessageChanged(cdao As ClockDataObject)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockValueUpdated(cdao As ClockDataObject)
+		Sub ClockStarted(cdao As ClockDataObject)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStopped(cdao As ClockDataObject)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockValueChanged(cdao As ClockDataObject)
 		  
 		End Sub
 	#tag EndMethod

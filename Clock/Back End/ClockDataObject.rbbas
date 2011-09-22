@@ -48,7 +48,7 @@ Protected Class ClockDataObject
 		  
 		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
 		    
-		    t.ClockMessageUpdated Me
+		    t.ClockMessageChanged Me
 		    
 		  Next
 		End Sub
@@ -82,8 +82,8 @@ Protected Class ClockDataObject
 		    
 		    p_autoupdate_obj_pool.Append target
 		    
-		    target.ClockMessageUpdated Me
-		    target.ClockValueUpdated Me
+		    target.ClockMessageChanged Me
+		    target.ClockValueChanged Me
 		    
 		  End If
 		End Sub
