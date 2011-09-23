@@ -337,9 +337,17 @@ End
 	#tag Event
 		Sub Open()
 		  ClockDataObject.RegisterForClockSetUpdates Self
-		  UpdateSum
+		  RerenderSum
 		End Sub
 	#tag EndEvent
+
+
+	#tag MenuHandler
+		Function FileClose() As Boolean Handles FileClose.Action
+			Self.Close
+			Return True
+		End Function
+	#tag EndMenuHandler
 
 
 	#tag Method, Flags = &h0
@@ -349,8 +357,9 @@ End
 		  If Not ( cdao Is Nil ) Then
 		    
 		    lstClocks.AddRow cdao.DisplayName
-		    lstClocks.RowTag( lstClocks.LastIndex ) = cdao
+		    lstClocks.RowTag( lstClocks.LastIndex ) = cdao.ObjectID
 		    lstClocks.Cell( lstClocks.LastIndex, 1 ) = cdao.Value.ShortHumanReadableStringValue( DurationKFS.kSeconds )
+		    lstClocks.CellTag( lstClocks.LastIndex, 1 ) = cdao.Value
 		    
 		    cdao.RegisterForClockObjectUpdates Self
 		    
@@ -365,7 +374,8 @@ End
 		  // Part of the ClockSetEventReceiver interface.
 		  
 		  For row As Integer = lstClocks.ListCount -1 DownTo 0
-		    If lstClocks.RowTag( row ) Is cdao Then
+		    
+		    If lstClocks.RowTag( row ) = cdao.ObjectID Then
 		      
 		      lstClocks.RemoveRow row
 		      
@@ -380,7 +390,7 @@ End
 		  
 		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
 		    
-		    If ClockDataObject( lstClocks.RowTag( idx ) ) Is cdao Then
+		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
 		      
 		      lstClocks.Cell( idx, 0 ) = cdao.DisplayName
 		      
@@ -395,6 +405,16 @@ End
 		Sub ClockStarted(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
+		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		    
+		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		      
+		      lstClocks.CellTag( idx, 1 ) = cdao.Value
+		      
+		    End If
+		  Next
+		  
+		  lstClocks.Sort
 		End Sub
 	#tag EndMethod
 
@@ -402,6 +422,16 @@ End
 		Sub ClockStopped(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
+		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		    
+		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		      
+		      lstClocks.CellTag( idx, 1 ) = cdao.Value
+		      
+		    End If
+		  Next
+		  
+		  lstClocks.Sort
 		End Sub
 	#tag EndMethod
 
@@ -409,38 +439,35 @@ End
 		Sub ClockValueChanged(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
-		  UpdateNumbers
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub UpdateNumbers()
-		  Dim something_changed As Boolean = False
-		  
 		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
 		    
-		    Dim cdao As ClockDataObject = ClockDataObject( lstClocks.RowTag( idx ) )
-		    
-		    If cdao.IsRunning Then
+		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
 		      
-		      lstClocks.Cell( idx, 1 ) = cdao.Value.ShortHumanReadableStringValue( DurationKFS.kSeconds )
-		      something_changed = True
+		      lstClocks.CellTag( idx, 1 ) = cdao.Value
 		      
 		    End If
 		  Next
 		  
-		  If something_changed Then
-		    
-		    lstClocks.Sort
-		    
-		    UpdateSum
-		    
-		  End If
+		  lstClocks.Sort
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpdateSum()
+		Sub RerenderNumbers()
+		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		    
+		    lstClocks.Cell( idx, 1 ) = DurationKFS( lstClocks.CellTag( idx, 1 ) ).ShortHumanReadableStringValue( DurationKFS.kSeconds )
+		    
+		  Next
+		  
+		  lstClocks.Sort
+		  
+		  RerenderSum
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RerenderSum()
 		  Dim count_only_selected As Boolean = lstClocks.SelCount > 0
 		  
 		  Dim sum As New DurationKFS
@@ -449,7 +476,7 @@ End
 		    
 		    If Not count_only_selected Or lstClocks.Selected( idx ) Then
 		      
-		      sum = sum + ClockDataObject( lstClocks.RowTag( idx ) ).Value
+		      sum = sum + DurationKFS( lstClocks.CellTag( idx, 1 ) )
 		      
 		    End If
 		  Next
@@ -464,14 +491,30 @@ End
 #tag Events lstClocks
 	#tag Event
 		Sub Change()
-		  UpdateSum
+		  RerenderSum
 		End Sub
+	#tag EndEvent
+	#tag Event
+		Function CompareRows(row1 as Integer, row2 as Integer, column as Integer, ByRef result as Integer) As Boolean
+		  If column = 1 Then
+		    
+		    Dim d1 As DurationKFS = Me.CellTag( row1, 1 )
+		    Dim d2 As DurationKFS = Me.CellTag( row2, 1 )
+		    
+		    result = d1.Operator_Compare( d2 )
+		    
+		    Return True
+		    
+		  End If
+		  
+		  Return False
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag Events tmrRefresh
 	#tag Event
 		Sub Action()
-		  UpdateNumbers
+		  RerenderNumbers
 		End Sub
 	#tag EndEvent
 #tag EndEvents
