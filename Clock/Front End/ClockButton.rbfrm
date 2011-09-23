@@ -174,21 +174,7 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub RefreshLabel()
-		  Dim h, m, s As Integer
-		  Dim cursor As DurationKFS = p_clock.Value
-		  
-		  h = cursor.IntegerValue( DurationKFS.kHours )
-		  
-		  cursor = cursor - New DurationKFS( h, DurationKFS.kHours )
-		  
-		  m = cursor.IntegerValue( DurationKFS.kMinutes )
-		  
-		  cursor = cursor - New DurationKFS( m, DurationKFS.kMinutes )
-		  
-		  s = cursor.IntegerValue( DurationKFS.kSeconds )
-		  
-		  lblTotalTime.Text = Format( h, "00" ) + " : " + Format( m, "00" ) + " : " + Format( s, "00" )
-		  
+		  lblTotalTime.Text = p_clock.Value.FormatAsHHMMSS
 		End Sub
 	#tag EndMethod
 
