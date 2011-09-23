@@ -144,6 +144,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   False
       TabIndex        =   2
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Categories"
       TextAlign       =   0
       TextColor       =   &h000000
@@ -178,6 +179,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   False
       TabIndex        =   3
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Timers"
       TextAlign       =   0
       TextColor       =   &h000000
@@ -300,6 +302,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   True
       TabIndex        =   6
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Sum: something"
       TextAlign       =   2
       TextColor       =   &h000000
@@ -313,6 +316,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Width           =   280
    End
    Begin Timer tmrRefresh
+      Enabled         =   True
       Height          =   32
       Index           =   -2147483648
       Left            =   664
@@ -320,8 +324,11 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Mode            =   2
       Period          =   1000
       Scope           =   0
+      TabIndex        =   7
       TabPanelIndex   =   0
+      TabStop         =   True
       Top             =   14
+      Visible         =   True
       Width           =   32
    End
 End
@@ -355,15 +362,21 @@ End
 		  // Part of the ClockSetEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
-		    
-		    lstClocks.AddRow cdao.DisplayName
-		    lstClocks.RowTag( lstClocks.LastIndex ) = cdao.ObjectID
-		    lstClocks.CellTag( lstClocks.LastIndex, 1 ) = cdao.Value
-		    
-		    cdao.RegisterForClockObjectUpdates Self
-		    
-		    lstClocks.Sort
-		    
+		    If lstClocks Is Nil Then
+		      
+		      cdao.UnregisterForClockObjectUpdates Self
+		      
+		    Else
+		      
+		      lstClocks.AddRow cdao.DisplayName
+		      lstClocks.RowTag( lstClocks.LastIndex ) = cdao.ObjectID
+		      lstClocks.CellTag( lstClocks.LastIndex, 1 ) = cdao.Value
+		      
+		      cdao.RegisterForClockObjectUpdates Self
+		      
+		      lstClocks.Sort
+		      
+		    End If
 		  End If
 		End Sub
 	#tag EndMethod
@@ -372,14 +385,23 @@ End
 		Sub ClockDestroyed(cdao As ClockDataObject)
 		  // Part of the ClockSetEventReceiver interface.
 		  
-		  For row As Integer = lstClocks.ListCount -1 DownTo 0
-		    
-		    If lstClocks.RowTag( row ) = cdao.ObjectID Then
+		  If Not ( cdao Is Nil ) Then
+		    If lstClocks Is Nil Then
 		      
-		      lstClocks.RemoveRow row
+		      cdao.UnregisterForClockObjectUpdates Self
 		      
+		    Else
+		      
+		      For row As Integer = lstClocks.ListCount -1 DownTo 0
+		        
+		        If lstClocks.RowTag( row ) = cdao.ObjectID Then
+		          
+		          lstClocks.RemoveRow row
+		          
+		        End If
+		      Next
 		    End If
-		  Next
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -387,16 +409,26 @@ End
 		Sub ClockMessageChanged(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
-		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
-		    
-		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		  If Not ( cdao Is Nil ) Then
+		    If lstClocks Is Nil Then
 		      
-		      lstClocks.Cell( idx, 0 ) = cdao.DisplayName
+		      cdao.UnregisterForClockObjectUpdates Self
+		      
+		    Else
+		      
+		      For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		        
+		        If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		          
+		          lstClocks.Cell( idx, 0 ) = cdao.DisplayName
+		          
+		        End If
+		      Next
+		      
+		      lstClocks.Sort
 		      
 		    End If
-		  Next
-		  
-		  lstClocks.Sort
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -404,16 +436,26 @@ End
 		Sub ClockStarted(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
-		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
-		    
-		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		  If Not ( cdao Is Nil ) Then
+		    If lstClocks Is Nil Then
 		      
-		      lstClocks.CellTag( idx, 1 ) = cdao.Value
+		      cdao.UnregisterForClockObjectUpdates Self
+		      
+		    Else
+		      
+		      For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		        
+		        If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		          
+		          lstClocks.CellTag( idx, 1 ) = cdao.Value
+		          
+		        End If
+		      Next
+		      
+		      lstClocks.Sort
 		      
 		    End If
-		  Next
-		  
-		  lstClocks.Sort
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -421,16 +463,26 @@ End
 		Sub ClockStopped(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
-		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
-		    
-		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		  If Not ( cdao Is Nil ) Then
+		    If lstClocks Is Nil Then
 		      
-		      lstClocks.CellTag( idx, 1 ) = cdao.Value
+		      cdao.UnregisterForClockObjectUpdates Self
+		      
+		    Else
+		      
+		      For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		        
+		        If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		          
+		          lstClocks.CellTag( idx, 1 ) = cdao.Value
+		          
+		        End If
+		      Next
+		      
+		      lstClocks.Sort
 		      
 		    End If
-		  Next
-		  
-		  lstClocks.Sort
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -438,16 +490,26 @@ End
 		Sub ClockValueChanged(cdao As ClockDataObject)
 		  // Part of the ClockEventReceiver interface.
 		  
-		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
-		    
-		    If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		  If Not ( cdao Is Nil ) Then
+		    If lstClocks Is Nil Then
 		      
-		      lstClocks.CellTag( idx, 1 ) = cdao.Value
+		      cdao.UnregisterForClockObjectUpdates Self
+		      
+		    Else
+		      
+		      For idx As Integer = lstClocks.ListCount -1 DownTo 0
+		        
+		        If lstClocks.RowTag( idx ) = cdao.ObjectID Then
+		          
+		          lstClocks.CellTag( idx, 1 ) = cdao.Value
+		          
+		        End If
+		      Next
+		      
+		      lstClocks.Sort
 		      
 		    End If
-		  Next
-		  
-		  lstClocks.Sort
+		  End If
 		End Sub
 	#tag EndMethod
 
