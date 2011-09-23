@@ -358,7 +358,6 @@ End
 		    
 		    lstClocks.AddRow cdao.DisplayName
 		    lstClocks.RowTag( lstClocks.LastIndex ) = cdao.ObjectID
-		    lstClocks.Cell( lstClocks.LastIndex, 1 ) = cdao.Value.ShortHumanReadableStringValue( DurationKFS.kSeconds )
 		    lstClocks.CellTag( lstClocks.LastIndex, 1 ) = cdao.Value
 		    
 		    cdao.RegisterForClockObjectUpdates Self
@@ -456,7 +455,7 @@ End
 		Sub RerenderNumbers()
 		  For idx As Integer = lstClocks.ListCount -1 DownTo 0
 		    
-		    lstClocks.Cell( idx, 1 ) = DurationKFS( lstClocks.CellTag( idx, 1 ) ).ShortHumanReadableStringValue( DurationKFS.kSeconds )
+		    lstClocks.Cell( idx, 1 ) = DurationKFS( lstClocks.CellTag( idx, 1 ) ).FormatAsHHMMSS
 		    
 		  Next
 		  
@@ -481,7 +480,7 @@ End
 		    End If
 		  Next
 		  
-		  lblSum.Text = "Sum: " + sum.ShortHumanReadableStringValue( DurationKFS.kSeconds )
+		  lblSum.Text = "Sum: " + sum.FormatAsHHMMSS
 		End Sub
 	#tag EndMethod
 
