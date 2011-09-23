@@ -2,6 +2,7 @@
 Protected Class ClockDataObject
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor()
+		  ReDim p_autoupdate_obj_pool(-1)
 		  p_clock = New DurationKFS
 		  p_displayname = "Untitled Clock"
 		  p_id = NextUniqueInteger
@@ -12,6 +13,8 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor(other As ClockDataObject)
+		  ReDim p_autoupdate_obj_pool(-1)
+		  
 		  If other Is Nil Then
 		    
 		    p_clock = New DurationKFS
@@ -47,11 +50,31 @@ Protected Class ClockDataObject
 		  p_displayname = new_value
 		  
 		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
-		    
 		    t.ClockMessageChanged Me
-		    
 		  Next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		 Shared Function GetObjectByID(id As Int64) As ClockDataObject
+		  If Not ( p_cdao_pool Is Nil ) Then
+		    
+		    Dim v As Variant = p_cdao_pool.Lookup( id, Nil )
+		    
+		    If v IsA WeakRef Then
+		      
+		      v = WeakRef( v ).Value
+		      
+		      If v IsA ClockDataObject Then
+		        
+		        Return v
+		        
+		      End If
+		    End If
+		  End If
+		  
+		  Return Nil
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -62,7 +85,24 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Sub IsRunning(Assigns new_value As Boolean)
-		  p_clock.IsRunning = new_value
+		  If p_clock.IsRunning = Not new_value Then
+		    
+		    p_clock.IsRunning = new_value
+		    
+		    If new_value Then
+		      
+		      For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		        t.ClockStarted Me
+		      Next
+		      
+		    Else
+		      
+		      For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		        t.ClockStopped Me
+		      Next
+		      
+		    End If
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -73,6 +113,12 @@ Protected Class ClockDataObject
 		  counter = counter + 1
 		  
 		  Return counter
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ObjectID() As Int64
+		  Return p_id
 		End Function
 	#tag EndMethod
 
@@ -132,12 +178,20 @@ Protected Class ClockDataObject
 	#tag Method, Flags = &h0
 		Sub Start()
 		  p_clock.Start
+		  
+		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		    t.ClockStarted Me
+		  Next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Stop()
 		  p_clock.Stop
+		  
+		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		    t.ClockStopped Me
+		  Next
 		End Sub
 	#tag EndMethod
 
@@ -181,7 +235,7 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Function Value() As DurationKFS
-		  Return New DurationKFS( p_clock )
+		  Return New DurationKFS( p_clock, True )
 		End Function
 	#tag EndMethod
 
