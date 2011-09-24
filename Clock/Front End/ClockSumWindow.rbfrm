@@ -23,56 +23,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
    Resizeable      =   True
    Title           =   "Sum of the Clocks"
    Visible         =   False
-   Width           =   600
-   Begin Listbox lstCats
-      AutoDeactivate  =   True
-      AutoHideScrollbars=   True
-      Bold            =   ""
-      Border          =   True
-      ColumnCount     =   2
-      ColumnsResizable=   True
-      ColumnWidths    =   ""
-      DataField       =   ""
-      DataSource      =   ""
-      DefaultRowHeight=   -1
-      Enabled         =   True
-      EnableDrag      =   ""
-      EnableDragReorder=   ""
-      GridLinesHorizontal=   0
-      GridLinesVertical=   0
-      HasHeading      =   True
-      HeadingIndex    =   -1
-      Height          =   300
-      HelpTag         =   ""
-      Hierarchical    =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      InitialValue    =   "Name	Sum"
-      Italic          =   ""
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   ""
-      LockTop         =   True
-      RequiresSelection=   ""
-      Scope           =   0
-      ScrollbarHorizontal=   ""
-      ScrollBarVertical=   True
-      SelectionType   =   1
-      TabIndex        =   0
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0
-      TextUnit        =   0
-      Top             =   46
-      Underline       =   ""
-      UseFocusRing    =   True
-      Visible         =   True
-      Width           =   268
-      _ScrollWidth    =   -1
-   End
+   Width           =   400
    Begin Listbox lstClocks
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
@@ -98,7 +49,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       InitialParent   =   ""
       InitialValue    =   "Name	Sum"
       Italic          =   ""
-      Left            =   300
+      Left            =   20
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -119,43 +70,8 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Underline       =   ""
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   280
+      Width           =   360
       _ScrollWidth    =   -1
-   End
-   Begin Label Label1
-      AutoDeactivate  =   True
-      Bold            =   ""
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   ""
-      Left            =   20
-      LockBottom      =   ""
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      Multiline       =   ""
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Categories"
-      TextAlign       =   0
-      TextColor       =   &h000000
-      TextFont        =   "System"
-      TextSize        =   0
-      TextUnit        =   0
-      Top             =   14
-      Transparent     =   True
-      Underline       =   ""
-      Visible         =   True
-      Width           =   268
    End
    Begin Label Label2
       AutoDeactivate  =   True
@@ -168,7 +84,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   300
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -179,7 +95,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   False
       TabIndex        =   3
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Timers"
       TextAlign       =   0
       TextColor       =   &h000000
@@ -190,95 +105,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Transparent     =   True
       Underline       =   ""
       Visible         =   True
-      Width           =   280
-   End
-   Begin BevelButton BevelButton1
-      AcceptFocus     =   False
-      AutoDeactivate  =   True
-      BackColor       =   "&c000000"
-      Bevel           =   0
-      Bold            =   False
-      ButtonType      =   0
-      Caption         =   "+"
-      CaptionAlign    =   3
-      CaptionDelta    =   0
-      CaptionPlacement=   1
-      Enabled         =   True
-      HasBackColor    =   False
-      HasMenu         =   0
-      Height          =   22
-      HelpTag         =   ""
-      Icon            =   ""
-      IconAlign       =   0
-      IconDX          =   0
-      IconDY          =   0
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   ""
-      LockTop         =   False
-      MenuValue       =   0
-      Scope           =   0
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextColor       =   "&c000000"
-      TextFont        =   "System"
-      TextSize        =   ""
-      TextUnit        =   0
-      Top             =   358
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   22
-   End
-   Begin BevelButton BevelButton2
-      AcceptFocus     =   False
-      AutoDeactivate  =   True
-      BackColor       =   &h000000
-      Bevel           =   0
-      Bold            =   False
-      ButtonType      =   0
-      Caption         =   "-"
-      CaptionAlign    =   3
-      CaptionDelta    =   0
-      CaptionPlacement=   1
-      Enabled         =   True
-      HasBackColor    =   False
-      HasMenu         =   0
-      Height          =   22
-      HelpTag         =   ""
-      Icon            =   ""
-      IconAlign       =   0
-      IconDX          =   0
-      IconDY          =   0
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   41
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   ""
-      LockTop         =   False
-      MenuValue       =   0
-      Scope           =   0
-      TabIndex        =   5
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextColor       =   &h000000
-      TextFont        =   "System"
-      TextSize        =   ""
-      TextUnit        =   0
-      Top             =   358
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   22
+      Width           =   360
    End
    Begin Label lblSum
       AutoDeactivate  =   True
@@ -291,7 +118,7 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   ""
-      Left            =   300
+      Left            =   20
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -302,7 +129,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   True
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Sum: something"
       TextAlign       =   2
       TextColor       =   &h000000
@@ -313,10 +139,9 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Transparent     =   True
       Underline       =   ""
       Visible         =   True
-      Width           =   280
+      Width           =   360
    End
    Begin Timer tmrRefresh
-      Enabled         =   True
       Height          =   32
       Index           =   -2147483648
       Left            =   664
@@ -324,11 +149,8 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Mode            =   2
       Period          =   1000
       Scope           =   0
-      TabIndex        =   7
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   14
-      Visible         =   True
       Width           =   32
    End
 End
