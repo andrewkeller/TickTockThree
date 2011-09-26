@@ -94,8 +94,19 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub GetOptimalRowsAndColumns(area_aspect_ratio As Integer, cell_aspect_ratio As Double, cell_count As Integer, ByRef optimal_rows As Integer, ByRef optimal_cols As Integer)
-		  optimal_rows = 3
-		  optimal_cols = 3
+		  If cell_count > 1 Then
+		    
+		    Dim s As Double = Sqrt( cell_count )
+		    
+		    optimal_rows = Ceil( s )
+		    optimal_cols = Ceil( s )
+		    
+		  Else
+		    
+		    optimal_rows = 1
+		    optimal_cols = 1
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
