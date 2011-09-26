@@ -211,6 +211,10 @@ End
 		        avail_h = avail_h - p_clocks(idx).Height
 		        
 		      End If
+		      
+		      #if TargetWin32 then
+		        p_clocks(idx).Refresh
+		      #endif
 		    Next
 		  End If
 		End Sub
