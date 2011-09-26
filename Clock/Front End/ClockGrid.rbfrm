@@ -96,10 +96,36 @@ End
 		Protected Sub GetOptimalRowsAndColumns(area_aspect_ratio As Integer, cell_aspect_ratio As Double, cell_count As Integer, ByRef optimal_rows As Integer, ByRef optimal_cols As Integer)
 		  If cell_count > 1 Then
 		    
-		    Dim s As Double = Sqrt( cell_count )
+		    Dim r, c As Integer
 		    
-		    optimal_rows = Ceil( s )
-		    optimal_cols = Ceil( s )
+		    c = 1
+		    r = cell_count
+		    
+		    Dim calc_ratio As Double = cell_aspect_ratio * ( c / r )
+		    optimal_cols = c
+		    optimal_rows = r
+		    
+		    Dim ratio_diff As Double = Abs( calc_ratio - area_aspect_ratio )
+		    Dim best_ratio_diff As Double = ratio_diff
+		    
+		    Do
+		      
+		      c = c + 1
+		      r = Ceil( cell_count / c )
+		      
+		      calc_ratio = cell_aspect_ratio * ( c / r )
+		      ratio_diff = Abs( calc_ratio - area_aspect_ratio )
+		      
+		      If ratio_diff < best_ratio_diff Then
+		        
+		        best_ratio_diff = ratio_diff
+		        optimal_cols = c
+		        optimal_rows = r
+		        
+		      Else
+		        Exit
+		      End If
+		    Loop
 		    
 		  Else
 		    
