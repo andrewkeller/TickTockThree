@@ -82,6 +82,16 @@ End
 		Protected Sub ClockStartedHook(obj As ClockButton)
 		  obj.HasBackColor = True
 		  obj.Refresh
+		  
+		  If Not Keyboard.ShiftKey Then
+		    For Each c As ClockButton In p_clocks
+		      If Not ( c Is obj ) Then
+		        If c.IsPressed Then
+		          c.IsPressed = False
+		        End If
+		      End If
+		    Next
+		  End If
 		End Sub
 	#tag EndMethod
 
