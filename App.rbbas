@@ -37,6 +37,14 @@ Inherits Application
 
 
 	#tag MenuHandler
+		Function FileNewClockSet() As Boolean Handles FileNewClockSet.Action
+			Dim w As New ClockWindow
+			w.Show
+			Return True
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function FileNewSingletonClockWindow() As Boolean Handles FileNewSingletonClockWindow.Action
 			Dim w As New SingletonClockWindow
 			w.Show

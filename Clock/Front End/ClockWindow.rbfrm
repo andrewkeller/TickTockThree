@@ -8,11 +8,11 @@ Begin Window ClockWindow
    FullScreen      =   False
    HasBackColor    =   False
    Height          =   246
-   ImplicitInstance=   True
+   ImplicitInstance=   False
    LiveResize      =   True
    MacProcID       =   0
    MaxHeight       =   32000
-   MaximizeButton  =   False
+   MaximizeButton  =   True
    MaxWidth        =   32000
    MenuBar         =   260359578
    MenuBarVisible  =   True
@@ -22,7 +22,7 @@ Begin Window ClockWindow
    Placement       =   0
    Resizeable      =   True
    Title           =   "TickTockThree"
-   Visible         =   True
+   Visible         =   False
    Width           =   700
    Begin ClockGrid ClockGrid1
       AcceptFocus     =   ""

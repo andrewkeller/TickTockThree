@@ -5,13 +5,23 @@ Begin Menu MainMenu
       Text = "&File"
       Index = -2147483648
       AutoEnable = True
-      Begin MenuItem FileNewSingletonClockWindow
+      Begin MenuItem FileNewClockSet
          SpecialMenu = 0
-         Text = "New Singleton Clock Window"
+         Text = "New Clock Set"
          Index = -2147483648
          ShortcutKey = "N"
          Shortcut = "Cmd+N"
          MenuModifier = True
+         AutoEnable = True
+      End
+      Begin MenuItem FileNewSingletonClockWindow
+         SpecialMenu = 0
+         Text = "New Singleton Clock"
+         Index = -2147483648
+         ShortcutKey = "N"
+         Shortcut = "Cmd+Shift+N"
+         MenuModifier = True
+         AltMenuModifier = True
          AutoEnable = True
       End
       Begin MenuItem FileClose
