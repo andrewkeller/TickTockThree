@@ -28,28 +28,53 @@ End
 
 #tag WindowCode
 	#tag Event
+		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
+		  base.Append New MenuItem( "Add Clock" )
+		End Function
+	#tag EndEvent
+
+	#tag Event
+		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
+		  If hitItem.Text = "Add Clock" Then
+		    
+		    AddNewClock
+		    
+		    Return True
+		    
+		  End If
+		End Function
+	#tag EndEvent
+
+	#tag Event
 		Sub Open()
-		  Dim c1 As New ClockButton
-		  c1.EmbedWithin Self, 20, 14
-		  c1.DisplayName = "SFS"
-		  AddHandler c1.ClockStarted, AddressOf ClockStartedHook
-		  AddHandler c1.ClockStopped, AddressOf ClockStoppedHook
-		  
-		  Dim c2 As New ClockButton
-		  c2.EmbedWithin Self, c1.Left + c1.Width + 12, 14
-		  c2.DisplayName = "Multiboard"
-		  AddHandler c2.ClockStarted, AddressOf ClockStartedHook
-		  AddHandler c2.ClockStopped, AddressOf ClockStoppedHook
-		  
-		  Dim c3 As New ClockButton
-		  c3.EmbedWithin Self, c2.Left + c2.Width + 12, 14
-		  c3.DisplayName = "HHS"
-		  AddHandler c3.ClockStarted, AddressOf ClockStartedHook
-		  AddHandler c3.ClockStopped, AddressOf ClockStoppedHook
-		  
+		  AddNewClock
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Resized()
+		  RepositionClocks
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Resizing()
+		  RepositionClocks
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub AddNewClock()
+		  Dim c As New ClockButton
+		  c.EmbedWithin Self
+		  AddHandler c.ClockStarted, AddressOf ClockStartedHook
+		  AddHandler c.ClockStopped, AddressOf ClockStoppedHook
+		  p_clocks.Append c
+		  
+		  ResortClocks
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ClockStartedHook(obj As ClockButton)
@@ -62,6 +87,13 @@ End
 		Sub ClockStoppedHook(obj As ClockButton)
 		  obj.HasBackColor = False
 		  obj.Refresh
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub GetOptimalRowsAndColumns(area_aspect_ratio As Integer, cell_aspect_ratio As Double, cell_count As Integer, ByRef optimal_rows As Integer, ByRef optimal_cols As Integer)
+		  optimal_rows = 3
+		  optimal_cols = 3
 		End Sub
 	#tag EndMethod
 
@@ -89,10 +121,67 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub RepositionClocks()
+		  If UBound( p_clocks ) > -1 Then
+		    
+		    Dim avail_h, avail_h_bkup As Integer = Self.Height
+		    Dim avail_w, avail_w_bkup As Integer = Self.Width
+		    
+		    Dim rows, cols As Integer
+		    GetOptimalRowsAndColumns avail_w / avail_h, 1, UBound( p_clocks ) + 1, rows, cols
+		    
+		    Dim row As Integer = 0
+		    Dim col As Integer = 0
+		    
+		    For idx As Integer = 0 To UBound( p_clocks )
+		      
+		      If col > 0 Then
+		        p_clocks(idx).Left = p_clocks(idx-1).Left + p_clocks(idx-1).Width
+		        p_clocks(idx).Top = p_clocks(idx-1).Top
+		      ElseIf row > 0 Then
+		        p_clocks(idx).Left = 0
+		        p_clocks(idx).Top = p_clocks(idx-1).Top + p_clocks(idx-1).Height
+		      Else
+		        p_clocks(idx).Left = 0
+		        p_clocks(idx).Top = 0
+		      End If
+		      
+		      p_clocks(idx).Width = avail_w / ( cols - col )
+		      p_clocks(idx).Height = avail_h / ( rows - row )
+		      
+		      col = col + 1
+		      avail_w = avail_w - p_clocks(idx).Width
+		      
+		      If col >= cols Then
+		        
+		        col = 0
+		        avail_w = avail_w_bkup
+		        
+		        row = row + 1
+		        avail_h = avail_h - p_clocks(idx).Height
+		        
+		      End If
+		    Next
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ResortClocks()
+		  RepositionClocks
+		End Sub
+	#tag EndMethod
+
 
 	#tag Hook, Flags = &h0
 		Event CompareButtons(button1 As Integer, button2 As Integer, ByRef result As Integer) As Boolean
 	#tag EndHook
+
+
+	#tag Property, Flags = &h1
+		Protected p_clocks(-1) As ClockButton
+	#tag EndProperty
 
 
 #tag EndWindowCode

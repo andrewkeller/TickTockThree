@@ -210,12 +210,12 @@ End
 #tag Events lblTotalTime
 	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
-		  base.Append New MenuItem( "Change name..." )
+		  base.Append New MenuItem( "Change Name..." )
 		End Function
 	#tag EndEvent
 	#tag Event
 		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
-		  If hitItem.Text = "Change name..." Then
+		  If hitItem.Text = "Change Name..." Then
 		    
 		    Dim new_name As String = Self.DisplayName
 		    

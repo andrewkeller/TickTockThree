@@ -33,11 +33,10 @@ Begin Window ClockWindow
       Enabled         =   True
       EraseBackground =   True
       HasBackColor    =   False
-      Height          =   246
+      Height          =   224
       HelpTag         =   ""
-      Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   0
+      Left            =   14
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -47,10 +46,10 @@ Begin Window ClockWindow
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      Top             =   0
+      Top             =   8
       UseFocusRing    =   ""
       Visible         =   True
-      Width           =   700
+      Width           =   672
    End
 End
 #tag EndWindow
