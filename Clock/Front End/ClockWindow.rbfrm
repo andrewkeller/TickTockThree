@@ -55,6 +55,19 @@ End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Event
+		Function CancelClose(appQuitting as Boolean) As Boolean
+		  If MsgBox( "This program cannot currently save any changes.  Are you sure you would like to close this window?", 1 + 16 ) = 2 Then
+		    
+		    Return True
+		    
+		  End If
+		  
+		  Return False
+		End Function
+	#tag EndEvent
+
+
 	#tag MenuHandler
 		Function FileClose() As Boolean Handles FileClose.Action
 			Self.Close

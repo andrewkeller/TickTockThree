@@ -56,6 +56,18 @@ End
 
 #tag WindowCode
 	#tag Event
+		Function CancelClose(appQuitting as Boolean) As Boolean
+		  If MsgBox( "This program cannot currently save any changes.  Are you sure you would like to close this window?", 1 + 16 ) = 2 Then
+		    
+		    Return True
+		    
+		  End If
+		  
+		  Return False
+		End Function
+	#tag EndEvent
+
+	#tag Event
 		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
 		  Dim m As New MenuItem( "Enable Global Exclusion" )
 		  
