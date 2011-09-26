@@ -70,21 +70,23 @@ End
 		  c.EmbedWithin Self
 		  AddHandler c.ClockStarted, AddressOf ClockStartedHook
 		  AddHandler c.ClockStopped, AddressOf ClockStoppedHook
+		  AddHandler c.UserWantsClockClosed, AddressOf UserWantsClockClosedHook
+		  
 		  p_clocks.Append c
 		  
 		  ResortClocks
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub ClockStartedHook(obj As ClockButton)
+	#tag Method, Flags = &h1
+		Protected Sub ClockStartedHook(obj As ClockButton)
 		  obj.HasBackColor = True
 		  obj.Refresh
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub ClockStoppedHook(obj As ClockButton)
+	#tag Method, Flags = &h1
+		Protected Sub ClockStoppedHook(obj As ClockButton)
 		  obj.HasBackColor = False
 		  obj.Refresh
 		End Sub
@@ -169,6 +171,22 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub ResortClocks()
+		  RepositionClocks
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub UserWantsClockClosedHook(obj As ClockButton)
+		  For idx As Integer = UBound( p_clocks ) DownTo 0
+		    If p_clocks(idx) Is obj Then
+		      
+		      p_clocks.Remove idx
+		      
+		    End If
+		  Next
+		  
+		  obj.Close
+		  
 		  RepositionClocks
 		End Sub
 	#tag EndMethod

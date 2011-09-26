@@ -117,6 +117,25 @@ End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Event
+		Function ConstructContextualMenu(base as MenuItem, x as Integer, y as Integer) As Boolean
+		  base.Append New MenuItem( "Destroy Clock" )
+		End Function
+	#tag EndEvent
+
+	#tag Event
+		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
+		  If hitItem.Text = "Destroy Clock" Then
+		    
+		    RaiseEvent UserWantsClockClosed
+		    
+		    Return True
+		    
+		  End If
+		End Function
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor()
 		  Super.Constructor
@@ -189,6 +208,10 @@ End
 
 	#tag Hook, Flags = &h0
 		Event LabelChanged()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event UserWantsClockClosed()
 	#tag EndHook
 
 

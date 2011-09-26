@@ -168,4 +168,9 @@ End
 		  Self.HasBackColor = False
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub UserWantsClockClosed()
+		  Self.Close
+		End Sub
+	#tag EndEvent
 #tag EndEvents
