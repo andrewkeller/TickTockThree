@@ -57,10 +57,12 @@ End
 #tag WindowCode
 	#tag Event
 		Function CancelClose(appQuitting as Boolean) As Boolean
-		  If MsgBox( "This program cannot currently save any changes.  Are you sure you would like to close this window?", 1 + 16 ) = 2 Then
-		    
-		    Return True
-		    
+		  If App.UserWantsToSaveSingletonWindows Then
+		    If MsgBox( "This program cannot currently save any changes.  Are you sure you would like to close this window?", 1 + 16 ) = 2 Then
+		      
+		      Return True
+		      
+		    End If
 		  End If
 		  
 		  Return False
