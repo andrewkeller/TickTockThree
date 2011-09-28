@@ -7,6 +7,8 @@ Protected Class ClockDataObject
 		  p_displayname = "Untitled Clock"
 		  p_id = NextUniqueInteger
 		  
+		  App.Log "ClockDataObject initializing with id " + Str(p_id) + "."
+		  
 		  RegisterObject Me
 		End Sub
 	#tag EndMethod
@@ -14,20 +16,25 @@ Protected Class ClockDataObject
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor(other As ClockDataObject)
 		  ReDim p_autoupdate_obj_pool(-1)
+		  Dim other_id_str As String
 		  
 		  If other Is Nil Then
 		    
 		    p_clock = New DurationKFS
 		    p_displayname = "Untitled Clock"
+		    other_id_str = "Nil"
 		    
 		  Else
 		    
 		    p_clock = New DurationKFS( other.p_clock, True )
 		    p_displayname = other.p_displayname
+		    other_id_str = Str( other.p_id )
 		    
 		  End If
 		  
 		  p_id = NextUniqueInteger
+		  
+		  App.Log "ClockDataObject initializing as clone (id=" + other_id_str + ") with id " + Str(p_id) + "."
 		  
 		  RegisterObject Me
 		End Sub
@@ -35,6 +42,8 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
+		  App.Log "ClockDataObject deallocating (id=" + Str( p_id ) + ")."
+		  
 		  UnregisterObject Me
 		End Sub
 	#tag EndMethod
