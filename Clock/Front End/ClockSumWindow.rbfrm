@@ -95,7 +95,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   False
       TabIndex        =   3
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Timers"
       TextAlign       =   0
       TextColor       =   &h000000
@@ -130,7 +129,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   True
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Sum: something"
       TextAlign       =   2
       TextColor       =   &h000000
@@ -144,7 +142,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Width           =   360
    End
    Begin Timer tmrRefresh
-      Enabled         =   True
       Height          =   32
       Index           =   -2147483648
       Left            =   664
@@ -152,11 +149,8 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Mode            =   2
       Period          =   1000
       Scope           =   0
-      TabIndex        =   3
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   14
-      Visible         =   True
       Width           =   32
    End
 End
