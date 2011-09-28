@@ -1,6 +1,7 @@
 #tag Class
 Protected Class App
 Inherits Application
+Implements Logger
 	#tag Event
 		Function CancelClose() As Boolean
 		  Dim grp_cnt, sng_cnt As Integer = 0
@@ -43,6 +44,21 @@ Inherits Application
 
 
 	#tag MenuHandler
+		Function DebugShowLog() As Boolean Handles DebugShowLog.Action
+			Dim log As Variant = DefaultLog
+			
+			If log IsA LogWindow Then
+			
+			LogWindow( log ).Show
+			
+			End If
+			
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function FileNewClockSet() As Boolean Handles FileNewClockSet.Action
 			Dim w As New ClockWindow
 			w.Show
@@ -69,11 +85,45 @@ Inherits Application
 
 
 	#tag Method, Flags = &h0
+		Function DefaultLog() As Logger
+		  If p_log Is Nil Then
+		    
+		    #if TargetHasGUI then
+		      
+		      p_log = New LogWindow
+		      
+		    #else
+		      
+		      #pragma Error The App class does not currently support anything without a GUI.
+		      
+		    #endif
+		    
+		  End If
+		  
+		  Return p_log
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Log(msg As String)
+		  // Part of the Logger interface.
+		  
+		  DefaultLog.Log msg
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function UserWantsToSaveSingletonWindows() As Boolean
 		  Return p_user_wants_to_save_singleton_windows
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected p_log As Logger
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected p_user_wants_to_save_singleton_windows As Boolean

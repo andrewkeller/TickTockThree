@@ -129,5 +129,17 @@ Begin Menu MainMenu
          AutoEnable = True
       End
    End
+   Begin MenuItem DebugMenu
+      SpecialMenu = 0
+      Text = "Debug"
+      Index = -2147483648
+      AutoEnable = True
+      Begin MenuItem DebugShowLog
+         SpecialMenu = 0
+         Text = "Show Log"
+         Index = -2147483648
+         AutoEnable = True
+      End
+   End
 End
 #tag EndMenu
