@@ -26,23 +26,17 @@ Protected Module ClockGlobals
 		    
 		    Dim r, c As Integer
 		    
-		    c = 1
-		    r = cell_count
+		    optimal_cols = 1
+		    optimal_rows = cell_count
 		    
-		    Dim calc_ratio As Double = cell_aspect_ratio * ( c / r )
-		    optimal_cols = c
-		    optimal_rows = r
+		    Dim best_ratio_diff As Double = Abs( ( cell_aspect_ratio * (1/cell_count) ) - area_aspect_ratio )
 		    
-		    Dim ratio_diff As Double = Abs( calc_ratio - area_aspect_ratio )
-		    Dim best_ratio_diff As Double = ratio_diff
-		    
-		    Do
+		    For c = 1 To cell_count / 2 Step 1
 		      
-		      c = c + 1
 		      r = Ceil( cell_count / c )
 		      
-		      calc_ratio = cell_aspect_ratio * ( c / r )
-		      ratio_diff = Abs( calc_ratio - area_aspect_ratio )
+		      Dim calc_ratio As Double = cell_aspect_ratio * (c/r)
+		      Dim ratio_diff As Double = Abs( calc_ratio - area_aspect_ratio )
 		      
 		      If ratio_diff < best_ratio_diff Then
 		        
@@ -50,11 +44,19 @@ Protected Module ClockGlobals
 		        optimal_cols = c
 		        optimal_rows = r
 		        
-		      Else
-		        Exit
 		      End If
-		    Loop
-		    
+		      
+		      calc_ratio = cell_aspect_ratio * (r/c)
+		      ratio_diff = Abs( calc_ratio - area_aspect_ratio )
+		      
+		      If ratio_diff < best_ratio_diff Then
+		        
+		        best_ratio_diff = ratio_diff
+		        optimal_cols = r
+		        optimal_rows = c
+		        
+		      End If
+		    Next
 		  Else
 		    
 		    optimal_rows = 1
