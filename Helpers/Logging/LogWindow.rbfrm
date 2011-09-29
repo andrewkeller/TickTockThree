@@ -43,16 +43,16 @@ Begin Window LogWindow Implements Logger
       Italic          =   ""
       Left            =   0
       LimitText       =   0
-      LockBottom      =   ""
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   ""
+      LockRight       =   True
       LockTop         =   True
       Mask            =   ""
       Multiline       =   True
       ReadOnly        =   True
       Scope           =   2
-      ScrollbarHorizontal=   ""
+      ScrollbarHorizontal=   True
       ScrollbarVertical=   True
       Styled          =   False
       TabIndex        =   0
@@ -77,10 +77,13 @@ End
 		Sub Log(msg As String)
 		  // Part of the Logger interface.
 		  
-		  Dim d As New Date
-		  
-		  txtOut.AppendText d.SQLDateTime + " " + msg + EndOfLine
-		  
+		  If Not ( txtOut Is Nil ) Then
+		    
+		    Dim d As New Date
+		    
+		    txtOut.AppendText d.SQLDateTime + " " + msg + EndOfLine
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
