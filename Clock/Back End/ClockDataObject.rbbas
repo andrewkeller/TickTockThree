@@ -7,7 +7,7 @@ Protected Class ClockDataObject
 		  p_displayname = "Untitled Clock"
 		  p_id = NextUniqueInteger
 		  
-		  App.Log "ClockDataObject initializing with id " + Str(p_id) + "."
+		  App.Log "ClockDataObject<" + Str( p_id ) + "> initializing."
 		  
 		  RegisterObject Me
 		End Sub
@@ -34,7 +34,7 @@ Protected Class ClockDataObject
 		  
 		  p_id = NextUniqueInteger
 		  
-		  App.Log "ClockDataObject initializing as clone (id=" + other_id_str + ") with id " + Str(p_id) + "."
+		  App.Log "ClockDataObject<" + Str( p_id ) + "> initializing as a clone of ClockDataObject<" + Str( other.p_id ) + ">."
 		  
 		  RegisterObject Me
 		End Sub
@@ -42,7 +42,7 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
-		  App.Log "ClockDataObject deallocating (id=" + Str( p_id ) + ")."
+		  App.Log "ClockDataObject<" + Str( p_id ) + "> deallocating."
 		  
 		  UnregisterObject Me
 		End Sub
@@ -56,6 +56,8 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
+		  App.Log "ClockDataObject<" + Str( p_id ) + "> changing display name to '" + new_value + "'."
+		  
 		  p_displayname = new_value
 		  
 		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
@@ -94,20 +96,32 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Sub IsRunning(Assigns new_value As Boolean)
-		  If p_clock.IsRunning = Not new_value Then
+		  If p_clock.IsRunning <> new_value Then
 		    
 		    p_clock.IsRunning = new_value
 		    
 		    If new_value Then
 		      
+		      App.Log "ClockDataObject<" + Str( p_id ) + "> changing state to name to running."
+		      
 		      For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		        
+		        App.Log "ClockDataObject<" + Str( p_id ) + "> notifying ClockEventReceiver<" + Str( cvt(t).Hash ) + "> that the state has changed to running."
+		        
 		        t.ClockStarted Me
+		        
 		      Next
 		      
 		    Else
 		      
+		      App.Log "ClockDataObject<" + Str( p_id ) + "> changing state to name to stopped."
+		      
 		      For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		        
+		        App.Log "ClockDataObject<" + Str( p_id ) + "> notifying ClockEventReceiver<" + Str( cvt(t).Hash ) + "> that the state has changed to stopped."
+		        
 		        t.ClockStopped Me
+		        
 		      Next
 		      
 		    End If
@@ -137,6 +151,8 @@ Protected Class ClockDataObject
 		    
 		    p_autoupdate_obj_pool.Append target
 		    
+		    App.Log "ClockDataObject<" + Str( p_id ) + "> registering ClockEventReceiver<" + Str( cvt(target).Hash ) + ">."
+		    
 		    target.ClockMessageChanged Me
 		    target.ClockValueChanged Me
 		    
@@ -147,6 +163,8 @@ Protected Class ClockDataObject
 	#tag Method, Flags = &h0
 		 Shared Sub RegisterForClockSetUpdates(target As ClockSetEventReceiver)
 		  If Not ( target Is Nil ) Then
+		    
+		    App.Log "Global ClockDataObject pool regestering ClockSetEventReceiver<" + Str( cvt(target).Hash ) + ">."
 		    
 		    p_autoupdate_set_pool.Append target
 		    
@@ -162,6 +180,8 @@ Protected Class ClockDataObject
 		        MsgBox "Uh oh...  While pushing all new clocks to a clock sum window, an exception of type "+Introspection.GetType(err).Name+" was encountered:" _
 		        + EndOfLine + EndOfLine + err.Message + " (error code " + Str( err.ErrorNumber ) + ")"
 		        
+		        App.Log "While notifying ClockSetEventReceiver<" + Str( cvt(target).Hash ) + "> of all data for the first time, an exception of type " + Introspection.GetType(err).Name + " was encountered: " + err.Message + " (error code " + Str( err.ErrorNumber ) + ")"
+		        
 		      End Try
 		    Next
 		  End If
@@ -172,12 +192,18 @@ Protected Class ClockDataObject
 		Protected Shared Sub RegisterObject(cdao As ClockDataObject)
 		  If Not ( cdao Is Nil ) Then
 		    
+		    App.Log "Global ClockDataObject pool regestering ClockDataObject<" + Str( cdao.ObjectID ) + ">."
+		    
 		    If p_cdao_pool Is Nil Then p_cdao_pool = New Dictionary
 		    
 		    p_cdao_pool.Value( cdao.p_id ) = New WeakRef( cdao )
 		    
 		    For Each t As ClockSetEventReceiver In p_autoupdate_set_pool
+		      
+		      App.Log "Global ClockDataObject pool notifying ClockSetEventReceiver<" + Str( cvt(t).Hash ) + "> that ClockDataObject<" + Str( cdao.ObjectID ) + "> is now a member of the set."
+		      
 		      t.ClockCreated cdao
+		      
 		    Next
 		    
 		  End If
@@ -186,47 +212,71 @@ Protected Class ClockDataObject
 
 	#tag Method, Flags = &h0
 		Sub Start()
+		  App.Log "ClockDataObject<" + Str( p_id ) + "> changing state to name to running."
+		  
 		  p_clock.Start
 		  
 		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		    
+		    App.Log "ClockDataObject<" + Str( p_id ) + "> notifying ClockEventReceiver<" + Str( cvt(t).Hash ) + "> that the state has changed to running."
+		    
 		    t.ClockStarted Me
+		    
 		  Next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Stop()
+		  App.Log "ClockDataObject<" + Str( p_id ) + "> changing state to name to stopped."
+		  
 		  p_clock.Stop
 		  
 		  For Each t As ClockEventReceiver In p_autoupdate_obj_pool
+		    
+		    App.Log "ClockDataObject<" + Str( p_id ) + "> notifying ClockEventReceiver<" + Str( cvt(t).Hash ) + "> that the state has changed to stopped."
+		    
 		    t.ClockStopped Me
+		    
 		  Next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UnregisterForClockObjectUpdates(target As ClockEventReceiver)
-		  For idx As Integer = UBound( p_autoupdate_obj_pool ) DownTo 0
+		  If Not ( target Is Nil ) Then
 		    
-		    If p_autoupdate_obj_pool(idx) Is Nil Or p_autoupdate_obj_pool(idx) Is target Then p_autoupdate_obj_pool.Remove idx
+		    App.Log "ClockDataObjec<" + Str( p_id ) + "> unregistering ClockEventReceiver<" + Str( cvt(target).Hash ) + ">."
 		    
-		  Next
+		    For idx As Integer = UBound( p_autoupdate_obj_pool ) DownTo 0
+		      
+		      If p_autoupdate_obj_pool(idx) Is Nil Or p_autoupdate_obj_pool(idx) Is target Then p_autoupdate_obj_pool.Remove idx
+		      
+		    Next
+		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		 Shared Sub UnregisterForClockSetUpdates(target As ClockSetEventReceiver)
-		  For idx As Integer = UBound( p_autoupdate_set_pool ) DownTo 0
+		  If Not ( target Is Nil ) Then
 		    
-		    If p_autoupdate_set_pool(idx) Is Nil Or p_autoupdate_set_pool(idx) Is target Then p_autoupdate_set_pool.Remove idx
+		    App.Log "Global ClockDataObject pool unregestering ClockSetEventReceiver<" + Str( cvt(target).Hash ) + ">."
 		    
-		  Next
+		    For idx As Integer = UBound( p_autoupdate_set_pool ) DownTo 0
+		      
+		      If p_autoupdate_set_pool(idx) Is Nil Or p_autoupdate_set_pool(idx) Is target Then p_autoupdate_set_pool.Remove idx
+		      
+		    Next
+		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
 		Protected Shared Sub UnregisterObject(cdao As ClockDataObject)
 		  If Not ( cdao Is Nil ) Then
+		    
+		    App.Log "Global ClockDataObject pool unregestering ClockDataObject<" + Str( cdao.ObjectID ) + ">."
 		    
 		    If Not ( p_cdao_pool Is Nil ) Then
 		      
@@ -235,7 +285,11 @@ Protected Class ClockDataObject
 		    End If
 		    
 		    For Each t As ClockSetEventReceiver In p_autoupdate_set_pool
+		      
+		      App.Log "Global ClockDataObject pool notifying ClockSetEventReceiver<" + Str( cvt(t).Hash ) + "> that ClockDataObject<" + Str( cdao.ObjectID ) + "> is no longer registered."
+		      
 		      t.ClockDestroyed cdao
+		      
 		    Next
 		    
 		  End If
