@@ -46,6 +46,7 @@ Begin Window EnterStringWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
       TextColor       =   &h000000

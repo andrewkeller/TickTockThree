@@ -73,6 +73,7 @@ Begin Window AskReviewChangesWindow
       Selectable      =   False
       TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
       TextColor       =   &h000000
@@ -107,6 +108,7 @@ Begin Window AskReviewChangesWindow
       Selectable      =   False
       TabIndex        =   2
       TabPanelIndex   =   0
+      TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
       TextColor       =   &h000000
