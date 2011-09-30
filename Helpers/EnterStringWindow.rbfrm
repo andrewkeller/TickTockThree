@@ -8,7 +8,7 @@ Begin Window EnterStringWindow
    FullScreen      =   False
    HasBackColor    =   False
    Height          =   1.47e+2
-   ImplicitInstance=   True
+   ImplicitInstance=   False
    LiveResize      =   True
    MacProcID       =   0
    MaxHeight       =   32000

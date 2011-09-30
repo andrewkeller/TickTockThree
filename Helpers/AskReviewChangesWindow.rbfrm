@@ -8,7 +8,7 @@ Begin Window AskReviewChangesWindow
    FullScreen      =   False
    HasBackColor    =   False
    Height          =   1.59e+2
-   ImplicitInstance=   True
+   ImplicitInstance=   False
    LiveResize      =   True
    MacProcID       =   0
    MaxHeight       =   32000
@@ -17,7 +17,7 @@ Begin Window AskReviewChangesWindow
    MenuBar         =   ""
    MenuBarVisible  =   True
    MinHeight       =   64
-   MinimizeButton  =   True
+   MinimizeButton  =   False
    MinWidth        =   64
    Placement       =   0
    Resizeable      =   False
