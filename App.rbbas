@@ -38,6 +38,7 @@ Implements Logger
 
 	#tag Event
 		Sub Open()
+		  p_log = New SimpleLogger
 		  p_user_wants_to_save_singleton_windows = True
 		End Sub
 	#tag EndEvent
@@ -45,11 +46,17 @@ Implements Logger
 
 	#tag MenuHandler
 		Function DebugShowLog() As Boolean Handles DebugShowLog.Action
-			Dim log As Variant = DefaultLog
+			If p_log Is Nil Then
 			
-			If log IsA LogWindow Then
+			MsgBox "Sorry, but I cannot show you a log view, because the logger is not initialized."
 			
-			LogWindow( log ).Show
+			ElseIf p_log IsA PushingLogger Then
+			
+			Dim w As New SimpleLogWindow
+			
+			w.Show
+			
+			PushingLogger( p_log ).AttachIncrementallyUpdatableLogView w
 			
 			End If
 			
@@ -85,33 +92,79 @@ Implements Logger
 
 
 	#tag Method, Flags = &h0
-		Function DefaultLog() As Logger
-		  If p_log Is Nil Then
+		Sub Log(msg As String)
+		  // Part of the Logger interface.
+		  
+		  If Not ( p_log Is Nil ) Then
 		    
-		    #if TargetHasGUI then
-		      
-		      p_log = New LogWindow
-		      
-		    #else
-		      
-		      #pragma Error The App class does not currently support anything without a GUI.
-		      
-		    #endif
+		    p_log.Log msg
 		    
 		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function LogEntriesExpireAtMaxLogSize() As Boolean
+		  // Part of the Logger interface.
 		  
-		  Return p_log
-		  
+		  If p_log Is Nil Then
+		    
+		    Return True
+		    
+		  Else
+		    
+		    Return p_log.LogEntriesExpireAtMaxLogSize
+		    
+		  End If
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Log(msg As String)
+		Function LogIsCycledAtMaxLogSize() As Boolean
 		  // Part of the Logger interface.
 		  
-		  DefaultLog.Log msg
+		  If p_log Is Nil Then
+		    
+		    Return True
+		    
+		  Else
+		    
+		    Return p_log.LogIsCycledAtMaxLogSize
+		    
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function LogSize() As UInt64
+		  // Part of the Logger interface.
 		  
-		End Sub
+		  If p_log Is Nil Then
+		    
+		    Return 0
+		    
+		  Else
+		    
+		    Return p_log.LogSize
+		    
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function MaxLogSize() As UInt64
+		  // Part of the Logger interface.
+		  
+		  If p_log Is Nil Then
+		    
+		    Return 0
+		    
+		  Else
+		    
+		    Return p_log.MaxLogSize
+		    
+		  End If
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

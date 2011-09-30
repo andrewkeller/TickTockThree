@@ -1,5 +1,5 @@
 #tag Window
-Begin Window LogWindow Implements Logger
+Begin Window SimpleLogWindow Implements IncrementallyUpdatableLogView
    BackColor       =   &hFFFFFF
    Backdrop        =   ""
    CloseButton     =   True
@@ -69,24 +69,56 @@ Begin Window LogWindow Implements Logger
       Visible         =   True
       Width           =   600
    End
+   Begin Timer tmrRefresh
+      Height          =   32
+      Index           =   -2147483648
+      Left            =   672
+      LockedInPosition=   False
+      Mode            =   0
+      Period          =   0
+      Scope           =   0
+      TabPanelIndex   =   0
+      Top             =   14
+      Width           =   32
+   End
 End
 #tag EndWindow
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		Sub Log(msg As String)
-		  // Part of the Logger interface.
+		Sub NotifyLogEntryAdded(msg As String)
+		  // Part of the IncrementallyUpdatableLogView interface.
 		  
-		  If Not ( txtOut Is Nil ) Then
+		  If Not ( tmrRefresh Is Nil ) Then
 		    
-		    Dim d As New Date
+		    p_new_entries.Append msg
 		    
-		    txtOut.AppendText d.SQLDateTime + " " + msg + EndOfLine
+		    If tmrRefresh.Mode <> Timer.ModeSingle Then tmrRefresh.Mode = Timer.ModeSingle
 		    
 		  End If
 		End Sub
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h1
+		Protected p_new_entries() As String
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
+#tag Events tmrRefresh
+	#tag Event
+		Sub Action()
+		  If Not ( txtOut Is Nil ) Then
+		    If UBound( p_new_entries ) > -1 Then
+		      
+		      txtOut.AppendText Join( p_new_entries, EndOfLine ) + EndOfLine
+		      
+		      ReDim p_new_entries(-1)
+		      
+		    End If
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
