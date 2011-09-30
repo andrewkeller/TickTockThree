@@ -140,6 +140,9 @@ End
 		Attributes( Hidden = True )  Sub Constructor()
 		  Super.Constructor
 		  p_clock = New ClockDataObject
+		  
+		  App.Log "ClockButton<" + Str( cvt(Self).Hash ) + "> initialized, now showing ClockDataObject<" + Str( p_clock.ObjectID ) + ">."
+		  
 		End Sub
 	#tag EndMethod
 
