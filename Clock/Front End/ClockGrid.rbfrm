@@ -72,7 +72,7 @@ End
 		  AddHandler c.ClockStopped, AddressOf ClockStoppedHook
 		  AddHandler c.UserWantsClockClosed, AddressOf UserWantsClockClosedHook
 		  
-		  p_clocks.Append c
+		  p_clocks.Append New WeakRef( c )
 		  
 		  ResortClocks
 		End Sub
@@ -84,7 +84,8 @@ End
 		  obj.Refresh
 		  
 		  If Not Keyboard.ShiftKey Then
-		    For Each c As ClockButton In p_clocks
+		    For Each w As WeakRef In p_clocks
+		      Dim c As ClockButton = ClockButton( w.Value )
 		      If Not ( c Is obj ) Then
 		        If c.IsPressed Then
 		          c.IsPressed = False
@@ -140,23 +141,26 @@ End
 		    Dim col As Integer = 0
 		    
 		    For idx As Integer = 0 To UBound( p_clocks )
+		      Dim clk As ClockButton = ClockButton( p_clocks(idx).Value )
+		      Dim clkm1 As ClockButton = Nil
+		      If idx > 0 Then clkm1 = ClockButton( p_clocks(idx-1).Value )
 		      
 		      If col > 0 Then
-		        p_clocks(idx).Left = p_clocks(idx-1).Left + p_clocks(idx-1).Width
-		        p_clocks(idx).Top = p_clocks(idx-1).Top
+		        clk.Left = clkm1.Left + clkm1.Width
+		        clk.Top = clkm1.Top
 		      ElseIf row > 0 Then
-		        p_clocks(idx).Left = 0
-		        p_clocks(idx).Top = p_clocks(idx-1).Top + p_clocks(idx-1).Height
+		        clk.Left = 0
+		        clk.Top = clkm1.Top + clkm1.Height
 		      Else
-		        p_clocks(idx).Left = 0
-		        p_clocks(idx).Top = 0
+		        clk.Left = 0
+		        clk.Top = 0
 		      End If
 		      
-		      p_clocks(idx).Width = avail_w / ( cols - col )
-		      p_clocks(idx).Height = avail_h / ( rows - row )
+		      clk.Width = avail_w / ( cols - col )
+		      clk.Height = avail_h / ( rows - row )
 		      
 		      col = col + 1
-		      avail_w = avail_w - p_clocks(idx).Width
+		      avail_w = avail_w - clk.Width
 		      
 		      If col >= cols Then
 		        
@@ -164,12 +168,12 @@ End
 		        avail_w = avail_w_bkup
 		        
 		        row = row + 1
-		        avail_h = avail_h - p_clocks(idx).Height
+		        avail_h = avail_h - clk.Height
 		        
 		      End If
 		      
 		      #if TargetWin32 then
-		        p_clocks(idx).Refresh
+		        clk.Refresh
 		      #endif
 		    Next
 		  End If
@@ -205,7 +209,7 @@ End
 
 
 	#tag Property, Flags = &h1
-		Protected p_clocks(-1) As ClockButton
+		Protected p_clocks(-1) As WeakRef
 	#tag EndProperty
 
 
