@@ -1,6 +1,31 @@
-#tag Class
-Protected Class VolatileHistoricalClockDataStore
-Implements HistoricalClockDataStore
+#tag Interface
+Protected Interface ClockEventReceiver
+Implements UniqueIDParticipator
+	#tag Method, Flags = &h0
+		Sub ClockDisplayNameChanged(cdao As Clock)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStarted(cdao As Clock)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStopped(cdao As Clock)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockValueChanged(cdao As Clock)
+		  
+		End Sub
+	#tag EndMethod
+
+
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Index"
@@ -36,5 +61,5 @@ Implements HistoricalClockDataStore
 			InheritedFrom="Object"
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Interface
+#tag EndInterface

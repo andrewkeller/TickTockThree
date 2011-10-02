@@ -66,6 +66,19 @@ Protected Module ClockGlobals
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GlobalClockSet() As ClockSet
+		  If p_global_clock_set Is Nil Then p_global_clock_set = New WeakClockSet
+		  
+		  Return p_global_clock_set
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h1
+		Protected p_global_clock_set As ClockSet
+	#tag EndProperty
+
 
 	#tag Constant, Name = kDefaultActiveClockColor, Type = Color, Dynamic = False, Default = \"&c00D000", Scope = Public
 	#tag EndConstant

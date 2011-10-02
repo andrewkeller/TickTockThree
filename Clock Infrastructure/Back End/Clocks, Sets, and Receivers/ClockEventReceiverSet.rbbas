@@ -1,25 +1,43 @@
 #tag Interface
-Protected Interface ClockEventReceiver
+Protected Interface ClockEventReceiverSet
 	#tag Method, Flags = &h0
-		Sub ClockMessageChanged(cdao As ClockDataObject)
+		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockStarted(cdao As ClockDataObject)
+		Sub DetachClockEventReceiver(cer As ClockEventReceiver)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockStopped(cdao As ClockDataObject)
+		Function HoldsStrongReferencesToClockEventReceivers() As Boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NotifyClockDisplayNameChanged(cdo As Clock)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockValueChanged(cdao As ClockDataObject)
+		Sub NotifyClockStarted(cdo As Clock)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NotifyClockStopped(cdo As Clock)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NotifyClockValueChanged(cdo As Clock)
 		  
 		End Sub
 	#tag EndMethod

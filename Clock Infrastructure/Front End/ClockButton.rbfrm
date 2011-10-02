@@ -1,5 +1,5 @@
 #tag Window
-Begin ContainerControl ClockButton
+Begin ContainerControl ClockButton Implements ClockEventReceiver
    AcceptFocus     =   ""
    AcceptTabs      =   True
    AutoDeactivate  =   True
@@ -137,11 +137,47 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub ClockDisplayNameChanged(cdao As Clock)
+		  // Part of the ClockEventReceiver interface.
+		  #error  // (don't forget to implement this method!)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStarted(cdao As Clock)
+		  // Part of the ClockEventReceiver interface.
+		  #error  // (don't forget to implement this method!)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStopped(cdao As Clock)
+		  // Part of the ClockEventReceiver interface.
+		  #error  // (don't forget to implement this method!)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockValueChanged(cdao As Clock)
+		  // Part of the ClockEventReceiver interface.
+		  #error  // (don't forget to implement this method!)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor()
 		  Super.Constructor
-		  p_clock = New ClockDataObject
+		  p_clock = New VolatileClock
 		  
-		  App.Log "ClockButton<" + Str( cvt(Self).Hash ) + "> initialized, now showing ClockDataObject<" + Str( p_clock.ObjectID ) + ">."
+		  App.Log "ClockButton<" + Str( cvt(Self).Hash ) + "> initialized, now showing Clock<" + Str( p_clock.ObjectID ) + ">."
 		  
 		End Sub
 	#tag EndMethod
@@ -194,6 +230,15 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ObjectID() As Int64
+		  // Part of the UniqueIDParticipator interface.
+		  #error  // (don't forget to implement this method!)
+		  
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
 		Protected Sub RefreshLabel()
 		  lblTotalTime.Text = p_clock.Value.FormatAsHHMMSS
@@ -219,7 +264,7 @@ End
 
 
 	#tag Property, Flags = &h1
-		Protected p_clock As ClockDataObject
+		Protected p_clock As Clock
 	#tag EndProperty
 
 

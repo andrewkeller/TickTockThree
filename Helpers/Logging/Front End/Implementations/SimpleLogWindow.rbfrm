@@ -70,7 +70,6 @@ Begin Window SimpleLogWindow Implements IncrementallyUpdatableLogView
       Width           =   600
    End
    Begin Timer tmrRefresh
-      Enabled         =   True
       Height          =   32
       Index           =   -2147483648
       Left            =   672
@@ -78,11 +77,8 @@ Begin Window SimpleLogWindow Implements IncrementallyUpdatableLogView
       Mode            =   0
       Period          =   0
       Scope           =   0
-      TabIndex        =   1
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   14
-      Visible         =   True
       Width           =   32
    End
 End

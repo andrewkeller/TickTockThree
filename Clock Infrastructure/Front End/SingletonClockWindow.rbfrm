@@ -35,6 +35,7 @@ Begin Window SingletonClockWindow
       HasBackColor    =   False
       Height          =   121
       HelpTag         =   ""
+      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   14
       LockBottom      =   True

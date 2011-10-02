@@ -1,5 +1,5 @@
 #tag Window
-Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
+Begin Window ClockSumWindow Implements ClockEventReceiver, ClockSetEventReceiver
    BackColor       =   &hFFFFFF
    Backdrop        =   ""
    CloseButton     =   True
@@ -95,7 +95,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   False
       TabIndex        =   3
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Timers"
       TextAlign       =   0
       TextColor       =   &h000000
@@ -130,7 +129,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Selectable      =   True
       TabIndex        =   6
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Sum: something"
       TextAlign       =   2
       TextColor       =   &h000000
@@ -144,7 +142,6 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Width           =   360
    End
    Begin Timer tmrRefresh
-      Enabled         =   True
       Height          =   32
       Index           =   -2147483648
       Left            =   664
@@ -152,11 +149,8 @@ Begin Window ClockSumWindow Implements ClockSetEventReceiver,ClockEventReceiver
       Mode            =   2
       Period          =   1000
       Scope           =   0
-      TabIndex        =   3
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   14
-      Visible         =   True
       Width           =   32
    End
 End
@@ -165,19 +159,14 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Close()
-		  ClockDataObject.UnregisterForClockSetUpdates Self
-		  
-		  For row As Integer = lstClocks.ListCount -1 DownTo 0
-		    
-		    ClockDataObject.GetObjectByID( lstClocks.RowTag( row ).Int64Value ).UnregisterForClockObjectUpdates( Self )
-		    
-		  Next
+		  GlobalClockSet.DetachClockSetEventReceiver Self
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub Open()
-		  ClockDataObject.RegisterForClockSetUpdates Self
+		  p_id = GetUniqueIndexKFS
+		  GlobalClockSet.AttachClockSetEventReceiver Self
 		  RerenderSum
 		End Sub
 	#tag EndEvent
@@ -192,7 +181,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub ClockCreated(cdao As ClockDataObject)
+		Sub ClockAdded(cdao As Clock)
 		  // Part of the ClockSetEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
@@ -201,7 +190,7 @@ End
 		    lstClocks.RowTag( lstClocks.LastIndex ) = cdao.ObjectID
 		    lstClocks.CellTag( lstClocks.LastIndex, 1 ) = cdao.Value
 		    
-		    cdao.RegisterForClockObjectUpdates Self
+		    cdao.AttachClockEventReceiver Self
 		    
 		    lstClocks.Sort
 		    
@@ -210,25 +199,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockDestroyed(cdao As ClockDataObject)
-		  // Part of the ClockSetEventReceiver interface.
-		  
-		  If Not ( cdao Is Nil ) Then
-		    
-		    For row As Integer = lstClocks.ListCount -1 DownTo 0
-		      
-		      If lstClocks.RowTag( row ) = cdao.ObjectID Then
-		        
-		        lstClocks.RemoveRow row
-		        
-		      End If
-		    Next
-		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub ClockMessageChanged(cdao As ClockDataObject)
+		Sub ClockDisplayNameChanged(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
@@ -249,7 +220,25 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockStarted(cdao As ClockDataObject)
+		Sub ClockRemoved(cdao As Clock)
+		  // Part of the ClockSetEventReceiver interface.
+		  
+		  If Not ( cdao Is Nil ) Then
+		    
+		    For row As Integer = lstClocks.ListCount -1 DownTo 0
+		      
+		      If lstClocks.RowTag( row ) = cdao.ObjectID Then
+		        
+		        lstClocks.RemoveRow row
+		        
+		      End If
+		    Next
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockStarted(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
@@ -270,7 +259,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockStopped(cdao As ClockDataObject)
+		Sub ClockStopped(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
@@ -291,7 +280,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockValueChanged(cdao As ClockDataObject)
+		Sub ClockValueChanged(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
@@ -309,6 +298,14 @@ End
 		    
 		  End If
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ObjectID() As Int64
+		  // Part of the UniqueIDParticipator interface.
+		  
+		  Return p_id
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -343,6 +340,11 @@ End
 		  lblSum.Text = "Sum: " + sum.FormatAsHHMMSS
 		End Sub
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h1
+		Protected p_id As Int64
+	#tag EndProperty
 
 
 #tag EndWindowCode

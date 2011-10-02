@@ -1,13 +1,14 @@
 #tag Interface
 Protected Interface ClockSetEventReceiver
+Implements UniqueIDParticipator
 	#tag Method, Flags = &h0
-		Sub ClockCreated(cdao As ClockDataObject)
+		Sub ClockAdded(cdao As Clock)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockDestroyed(cdao As ClockDataObject)
+		Sub ClockRemoved(cdao As Clock)
 		  
 		End Sub
 	#tag EndMethod
