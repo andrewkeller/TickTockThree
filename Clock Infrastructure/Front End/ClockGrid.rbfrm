@@ -1,5 +1,5 @@
 #tag Window
-Begin ContainerControl ClockGrid
+Begin ContainerControl ClockGrid Implements ClockSetEventReceiver
    AcceptFocus     =   ""
    AcceptTabs      =   True
    AutoDeactivate  =   True
@@ -37,18 +37,12 @@ End
 		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
 		  If hitItem.Text = "Add Clock" Then
 		    
-		    AddNewClock
+		    AddNewVolatileClock
 		    
 		    Return True
 		    
 		  End If
 		End Function
-	#tag EndEvent
-
-	#tag Event
-		Sub Open()
-		  AddNewClock
-		End Sub
 	#tag EndEvent
 
 	#tag Event
@@ -65,85 +59,155 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub AddNewClock()
-		  Dim c As New ClockButton
-		  c.EmbedWithin Self
-		  AddHandler c.ClockStarted, AddressOf ClockStartedHook
-		  AddHandler c.ClockStopped, AddressOf ClockStoppedHook
-		  AddHandler c.UserWantsClockClosed, AddressOf UserWantsClockClosedHook
-		  
-		  p_clocks.Append New WeakRef( c )
-		  
-		  ResortClocks
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h1
-		Protected Sub ClockStartedHook(obj As ClockButton)
-		  obj.HasBackColor = True
-		  obj.Refresh
-		  
-		  If Not Keyboard.ShiftKey Then
-		    For Each w As WeakRef In p_clocks
-		      Dim c As ClockButton = ClockButton( w.Value )
-		      If Not ( c Is obj ) Then
-		        If c.IsPressed Then
-		          c.IsPressed = False
-		        End If
-		      End If
-		    Next
-		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h1
-		Protected Sub ClockStoppedHook(obj As ClockButton)
-		  obj.HasBackColor = False
-		  obj.Refresh
+		Sub AddNewVolatileClock()
+		  p_clockset.AddClock New VolatileClock
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IsPressed(index As Integer) As Boolean
-		  
+		Function ButtonDisplayName(id As Int64) As String
+		  Return ClockButton( WeakRef( p_clock_buttons.Value( id ) ).Value ).DisplayName
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub IsPressed(index As Integer, Assigns new_value As Boolean)
-		  
+		Sub ButtonDisplayName(id As Int64, Assigns new_value As String)
+		  ClockButton( WeakRef( p_clock_buttons.Value( id ) ).Value ).DisplayName = new_value
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Label(index As Integer) As String
-		  
+		Function ButtonIsRunning(id As Int64) As Boolean
+		  Return ClockButton( WeakRef( p_clock_buttons.Value( id ) ).Value ).IsPressed
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Label(index As Integer, Assigns new_value As String)
-		  
+		Sub ButtonIsRunning(id As Int64, Assigns new_value As Boolean)
+		  ClockButton( WeakRef( p_clock_buttons.Value( id ) ).Value ).IsPressed = new_value
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ButtonValue(id As Int64) As DurationKFS
+		  Return ClockButton( WeakRef( p_clock_buttons.Value( id ) ).Value ).Value
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockAdded(cdao As Clock)
+		  // Part of the ClockSetEventReceiver interface.
+		  
+		  Dim clkbtn As New ClockButton( cdao )
+		  
+		  p_clock_button_order.Insert GetInsertionPointOfNewButton( clkbtn ), clkbtn.ObjectID
+		  
+		  p_clock_buttons.Value( clkbtn.ObjectID ) = New WeakRef( clkbtn )
+		  
+		  clkbtn.EmbedWithin Self
+		  AddHandler clkbtn.UserWantsClockClosed, WeakAddressOf UserWantsClockClosedHook
+		  
+		  RepositionClocks
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClockRemoved(cdao As Clock)
+		  // Part of the ClockSetEventReceiver interface.
+		  
+		  // The given clock has been removed from the clock set.
+		  
+		  // Remove every button that was displaying that clock.
+		  
+		  For Each clkbtn As ClockButton In ListButtons
+		    If clkbtn.Clock Is cdao Then
+		      
+		      // Remove the button from the buttons Dictionary:
+		      
+		      p_clock_buttons.Remove clkbtn.ObjectID
+		      
+		      // Remove the button from the button order array:
+		      
+		      p_clock_button_order.Remove p_clock_button_order.IndexOf( clkbtn.ObjectID )
+		      
+		      // Close the button object:
+		      
+		      clkbtn.Close
+		      
+		    End If
+		  Next
+		  
+		  // Reposition the buttons:
+		  
+		  RepositionClocks
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Attributes( Hidden = True )  Sub Constructor()
+		  p_id = GetUniqueIndexKFS
+		  
+		  ReDim p_clock_button_order(-1)
+		  
+		  p_clock_buttons = New Dictionary
+		  
+		  p_clockset = New WeakClockSet
+		  p_clockset.AttachClockSetEventReceiver Self
+		  
+		  Super.Constructor
+		  
+		  ' AddNewVolatileClock
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function GetInsertionPointOfNewButton(clkbtn As ClockButton) As Integer
+		  Return 0
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function ListButtons() As ClockButton()
+		  Dim result() As ClockButton
+		  
+		  For Each id As Int64 In p_clock_button_order
+		    
+		    result.Append ClockButton( WeakRef( p_clock_buttons.Value( id ) ).Value )
+		    
+		  Next
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ObjectID() As Int64
+		  // Part of the UniqueIDParticipator interface.
+		  
+		  Return p_id
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
 		Protected Sub RepositionClocks()
-		  If UBound( p_clocks ) > -1 Then
+		  Dim buttons() As ClockButton = ListButtons
+		  
+		  If UBound( buttons ) > -1 Then
 		    
 		    Dim avail_h, avail_h_bkup As Integer = Self.Height
 		    Dim avail_w, avail_w_bkup As Integer = Self.Width
 		    
 		    Dim rows, cols As Integer
-		    GetOptimalRowsAndColumns avail_w / avail_h, 1, UBound( p_clocks ) + 1, rows, cols
+		    GetOptimalRowsAndColumns avail_w / avail_h, 1, UBound( buttons ) + 1, rows, cols
 		    
 		    Dim row As Integer = 0
 		    Dim col As Integer = 0
 		    
-		    For idx As Integer = 0 To UBound( p_clocks )
-		      Dim clk As ClockButton = ClockButton( p_clocks(idx).Value )
+		    For idx As Integer = 0 To UBound( buttons )
+		      Dim clk As ClockButton = buttons(idx)
 		      Dim clkm1 As ClockButton = Nil
-		      If idx > 0 Then clkm1 = ClockButton( p_clocks(idx-1).Value )
+		      If idx > 0 Then clkm1 = buttons(idx-1)
 		      
 		      If col > 0 Then
 		        clk.Left = clkm1.Left + clkm1.Width
@@ -180,36 +244,38 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub ResortClocks()
-		  RepositionClocks
+	#tag Method, Flags = &h0
+		Sub ResortButtons()
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub UserWantsClockClosedHook(obj As ClockButton)
-		  For idx As Integer = UBound( p_clocks ) DownTo 0
-		    If p_clocks(idx) Is obj Then
-		      
-		      p_clocks.Remove idx
-		      
-		    End If
-		  Next
-		  
-		  obj.Close
-		  
-		  RepositionClocks
+		Protected Sub UserWantsClockClosedHook(clkbtn As ClockButton)
+		  p_clockset.RemoveClock clkbtn.Clock
 		End Sub
 	#tag EndMethod
 
 
 	#tag Hook, Flags = &h0
-		Event CompareClocks(button1 As Integer, button2 As Integer, ByRef result As Integer) As Boolean
+		Event CompareClocks(button1id As Int64, button2id As Int64, ByRef result As Integer) As Boolean
 	#tag EndHook
 
 
 	#tag Property, Flags = &h1
-		Protected p_clocks(-1) As WeakRef
+		Protected p_clockset As ClockSet
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_clock_buttons As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_clock_button_order() As Int64
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_id As Int64
 	#tag EndProperty
 
 

@@ -137,6 +137,12 @@ End
 
 
 	#tag Method, Flags = &h0
+		Function Clock() As Clock
+		  Return p_clock
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub ClockDisplayNameChanged(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
@@ -185,6 +191,22 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Attributes( Hidden = True )  Sub Constructor(cdao As Clock)
+		  p_id = GetUniqueIndexKFS
+		  Super.Constructor
+		  p_clock = cdao
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + "> initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
+		  p_clock.AttachClockEventReceiver Me
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Attributes( Hidden = True )  Sub Destructor()
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + "> deallocating (was showing Clock<" + Str( p_clock.ObjectID ) + ">)."
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function DisplayName() As String
 		  Return p_clock.DisplayName
 		End Function
@@ -220,6 +242,12 @@ End
 		Protected Sub RefreshLabel()
 		  lblTotalTime.Text = p_clock.Value.FormatAsHHMMSS
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Value() As DurationKFS
+		  Return p_clock.Value
+		End Function
 	#tag EndMethod
 
 
