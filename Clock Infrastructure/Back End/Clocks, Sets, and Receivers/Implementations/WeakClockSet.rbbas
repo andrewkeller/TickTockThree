@@ -1,6 +1,6 @@
 #tag Class
 Protected Class WeakClockSet
-Inherits WeakSet
+Inherits WeakSetBaseCode
 Implements ClockSet
 	#tag Method, Flags = &h0
 		Sub AddClock(c As Clock)

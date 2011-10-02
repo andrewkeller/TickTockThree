@@ -1,6 +1,6 @@
 #tag Class
 Protected Class WeakClockSetEventReceiverSet
-Inherits WeakSet
+Inherits WeakSetBaseCode
 Implements ClockSetEventReceiverSet
 	#tag Method, Flags = &h0
 		Sub AttachClockSetEventReceiver(cser As ClockSetEventReceiver)
