@@ -4,9 +4,8 @@ Implements Clock
 	#tag Method, Flags = &h0
 		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the Clock interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  p_autoupdate_obj_pool.AttachClockEventReceiver cer
 		End Sub
 	#tag EndMethod
 
@@ -61,9 +60,8 @@ Implements Clock
 	#tag Method, Flags = &h0
 		Sub DetachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the Clock interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  p_autoupdate_obj_pool.DetachClockEventReceiver cer
 		End Sub
 	#tag EndMethod
 
@@ -86,9 +84,8 @@ Implements Clock
 	#tag Method, Flags = &h0
 		Function HoldsStrongReferencesToClockEventReceivers() As Boolean
 		  // Part of the Clock interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  Return p_autoupdate_obj_pool.HoldsStrongReferencesToClockEventReceivers
 		End Function
 	#tag EndMethod
 
@@ -124,9 +121,8 @@ Implements Clock
 	#tag Method, Flags = &h0
 		Function ObjectID() As Int64
 		  // Part of the UniqueIDParticipator interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  Return p_id
 		End Function
 	#tag EndMethod
 

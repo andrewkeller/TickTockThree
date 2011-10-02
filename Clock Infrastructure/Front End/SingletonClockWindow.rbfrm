@@ -167,7 +167,7 @@ End
 
 #tag Events clkBtn
 	#tag Event
-		Sub LabelChanged()
+		Sub DisplayNameChanged()
 		  Self.Title = Trim( Me.DisplayName ) + " Timer"
 		End Sub
 	#tag EndEvent

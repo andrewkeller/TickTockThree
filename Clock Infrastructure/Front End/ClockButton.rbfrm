@@ -139,46 +139,48 @@ End
 	#tag Method, Flags = &h0
 		Sub ClockDisplayNameChanged(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  bvlAction.Caption = p_clock.DisplayName
+		  RaiseEvent DisplayNameChanged
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ClockStarted(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  tmrRefresh.Mode = Timer.ModeMultiple
+		  RefreshLabel
+		  RaiseEvent ClockStarted
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ClockStopped(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  tmrRefresh.Mode = Timer.ModeOff
+		  RefreshLabel
+		  RaiseEvent ClockStopped
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ClockValueChanged(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  RefreshLabel
+		  RaiseEvent ValueChanged
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor()
+		  p_id = GetUniqueIndexKFS
 		  Super.Constructor
 		  p_clock = New VolatileClock
-		  
-		  App.Log "ClockButton<" + Str( cvt(Self).Hash ) + "> initialized, now showing Clock<" + Str( p_clock.ObjectID ) + ">."
-		  
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + "> initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
+		  p_clock.AttachClockEventReceiver Me
 		End Sub
 	#tag EndMethod
 
@@ -191,28 +193,6 @@ End
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
 		  p_clock.DisplayName = new_value
-		  bvlAction.Caption = new_value
-		  RaiseEvent LabelChanged
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h1
-		Protected Sub HandleClockStateChanged()
-		  If p_clock.IsRunning Then
-		    
-		    p_clock.Start
-		    tmrRefresh.Mode = Timer.ModeMultiple
-		    RefreshLabel
-		    RaiseEvent ClockStarted
-		    
-		  Else
-		    
-		    p_clock.Stop
-		    tmrRefresh.Mode = Timer.ModeOff
-		    RefreshLabel
-		    RaiseEvent ClockStopped
-		    
-		  End If
 		End Sub
 	#tag EndMethod
 
@@ -225,17 +205,14 @@ End
 	#tag Method, Flags = &h0
 		Sub IsPressed(Assigns new_value As Boolean)
 		  p_clock.IsRunning = new_value
-		  bvlAction.Value = new_value
-		  HandleClockStateChanged
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ObjectID() As Int64
 		  // Part of the UniqueIDParticipator interface.
-		  #error  // (don't forget to implement this method!)
 		  
-		  
+		  Return p_id
 		End Function
 	#tag EndMethod
 
@@ -255,16 +232,24 @@ End
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
-		Event LabelChanged()
+		Event DisplayNameChanged()
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
 		Event UserWantsClockClosed()
 	#tag EndHook
 
+	#tag Hook, Flags = &h0
+		Event ValueChanged()
+	#tag EndHook
+
 
 	#tag Property, Flags = &h1
 		Protected p_clock As Clock
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_id As Int64
 	#tag EndProperty
 
 
@@ -274,7 +259,6 @@ End
 	#tag Event
 		Sub Action()
 		  p_clock.IsRunning = Me.Value
-		  HandleClockStateChanged
 		End Sub
 	#tag EndEvent
 #tag EndEvents
