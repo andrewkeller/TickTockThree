@@ -204,7 +204,7 @@ End
 
 
 	#tag Hook, Flags = &h0
-		Event CompareButtons(button1 As Integer, button2 As Integer, ByRef result As Integer) As Boolean
+		Event CompareClocks(button1 As Integer, button2 As Integer, ByRef result As Integer) As Boolean
 	#tag EndHook
 
 

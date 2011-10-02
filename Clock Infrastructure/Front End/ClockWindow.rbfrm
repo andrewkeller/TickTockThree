@@ -80,7 +80,7 @@ End
 
 #tag Events ClockGrid1
 	#tag Event
-		Function CompareButtons(button1 As Integer, button2 As Integer, ByRef result As Integer) As Boolean
+		Function CompareClocks(button1 As Integer, button2 As Integer, ByRef result As Integer) As Boolean
 		  // For all nodes, sort lexicographically
 		  
 		  result = StrComp( Me.Label( button1 ), Me.Label( button2 ), 1 )
