@@ -44,9 +44,11 @@ Implements PushingLogger
 		Sub Log(msg As String)
 		  // Part of the Logger interface.
 		  
-		  Dim new_node As New NodeKFS
 		  Dim d As New Date
-		  new_node.Value = d.SQLDateTime + " " + msg
+		  msg = d.SQLDateTime + " " + msg
+		  
+		  Dim new_node As New NodeKFS
+		  new_node.Value = msg
 		  
 		  If p_log_oldest Is Nil Then
 		    
