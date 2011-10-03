@@ -6,6 +6,8 @@ Implements ClockSet
 		Sub AddClock(c As Clock)
 		  // Part of the ClockSet interface.
 		  
+		  App.Log "WeakClockSet<" + Str( cvt( Me ).Hash ) + ">: adding Clock<" + Str( c.ObjectID ) + ">."
+		  
 		  Me.Add c
 		  p_autoupdate_obj_pool.NotifyClockAdded Me, c
 		End Sub
@@ -15,9 +17,13 @@ Implements ClockSet
 		Sub AttachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSet interface.
 		  
+		  App.Log "WeakClockSet<" + Str( cvt( Me ).Hash ) + ">: attaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
+		  
 		  p_autoupdate_obj_pool.AttachClockSetEventReceiver cser
 		  
 		  For Each clk As Clock In Me.ListClocks
+		    
+		    App.Log "WeakClockSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockSetEventReceiver<" + Str( cser.ObjectID ) + "> that Clock<" + Str( clk.ObjectID ) + "> exists."
 		    
 		    cser.ClockAdded Me, clk
 		    
@@ -36,9 +42,13 @@ Implements ClockSet
 		Sub DetachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSet interface.
 		  
+		  App.Log "WeakClockSet<" + Str( cvt( Me ).Hash ) + ">: detaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
+		  
 		  p_autoupdate_obj_pool.DetachClockSetEventReceiver cser
 		  
 		  For Each clk As Clock In Me.ListClocks
+		    
+		    App.Log "WeakClockSet<" + Str( cvt( Me ).Hash ) + ">: reminding ClockSetEventReceiver<" + Str( cser.ObjectID ) + "> that it should make sure it detaches from Clock<" + Str( clk.ObjectID ) + ">."
 		    
 		    cser.ClockRemoved Me, clk
 		    
@@ -79,6 +89,8 @@ Implements ClockSet
 	#tag Method, Flags = &h0
 		Sub RemoveClock(c As Clock)
 		  // Part of the ClockSet interface.
+		  
+		  App.Log "WeakClockSet<" + Str( cvt( Me ).Hash ) + ">: removing Clock<" + Str( c.ObjectID ) + ">."
 		  
 		  Me.Remove c
 		  p_autoupdate_obj_pool.NotifyClockRemoved Me, c

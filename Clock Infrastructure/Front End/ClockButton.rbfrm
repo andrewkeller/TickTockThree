@@ -127,6 +127,8 @@ End
 		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
 		  If hitItem.Text = "Destroy Clock" Then
 		    
+		    App.Log "ClockButton<" + Str( p_id ) + ">: user wants to destroy this clock button.  Associated clock: Clock<" + Str( p_clock.ObjectID ) + ">."
+		    
 		    RaiseEvent UserWantsClockClosed
 		    
 		    Return True
@@ -185,7 +187,7 @@ End
 		  p_id = GetUniqueIndexKFS
 		  Super.Constructor
 		  p_clock = New VolatileClock
-		  App.Log "ClockButton<" + Str( Self.ObjectID ) + "> initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
 		  p_clock.AttachClockEventReceiver Me
 		End Sub
 	#tag EndMethod
@@ -195,14 +197,14 @@ End
 		  p_id = GetUniqueIndexKFS
 		  Super.Constructor
 		  p_clock = cdao
-		  App.Log "ClockButton<" + Str( Self.ObjectID ) + "> initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
 		  p_clock.AttachClockEventReceiver Me
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
-		  App.Log "ClockButton<" + Str( Self.ObjectID ) + "> deallocating (was showing Clock<" + Str( p_clock.ObjectID ) + ">)."
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( p_clock.ObjectID ) + ">)."
 		End Sub
 	#tag EndMethod
 

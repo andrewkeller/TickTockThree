@@ -5,6 +5,8 @@ Implements Clock
 		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the Clock interface.
 		  
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		  
 		  p_autoupdate_obj_pool.AttachClockEventReceiver cer
 		End Sub
 	#tag EndMethod
@@ -16,7 +18,7 @@ Implements Clock
 		  p_displayname = "Untitled Clock"
 		  p_id = GetUniqueIndexKFS
 		  
-		  App.Log "Clock<" + Str( p_id ) + "> initializing."
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: initializing."
 		  
 		  GlobalClockSet.AddClock Me
 		End Sub
@@ -43,7 +45,7 @@ Implements Clock
 		  
 		  p_id = GetUniqueIndexKFS
 		  
-		  App.Log "Clock<" + Str( p_id ) + "> initializing as a clone of Clock<" + Str( other.p_id ) + ">."
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: initializing as a clone of Clock<" + Str( other.p_id ) + ">."
 		  
 		  GlobalClockSet.AddClock Me
 		End Sub
@@ -51,7 +53,7 @@ Implements Clock
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
-		  App.Log "Clock<" + Str( p_id ) + "> deallocating."
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: deallocating."
 		  
 		  GlobalClockSet.RemoveClock Me
 		End Sub
@@ -60,6 +62,8 @@ Implements Clock
 	#tag Method, Flags = &h0
 		Sub DetachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the Clock interface.
+		  
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
 		  
 		  p_autoupdate_obj_pool.DetachClockEventReceiver cer
 		End Sub
@@ -73,7 +77,7 @@ Implements Clock
 
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
-		  App.Log "Clock<" + Str( p_id ) + "> changing display name to '" + new_value + "'."
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: changing display name to '" + new_value + "'."
 		  
 		  p_displayname = new_value
 		  
@@ -103,13 +107,13 @@ Implements Clock
 		    
 		    If new_value Then
 		      
-		      App.Log "Clock<" + Str( p_id ) + "> changing state to name to running."
+		      App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to running."
 		      
 		      p_autoupdate_obj_pool.NotifyClockStarted Me
 		      
 		    Else
 		      
-		      App.Log "Clock<" + Str( p_id ) + "> changing state to name to stopped."
+		      App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to stopped."
 		      
 		      p_autoupdate_obj_pool.NotifyClockStopped Me
 		      
@@ -128,7 +132,7 @@ Implements Clock
 
 	#tag Method, Flags = &h0
 		Sub Start()
-		  App.Log "Clock<" + Str( p_id ) + "> changing state to name to running."
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to running."
 		  
 		  p_clock.Start
 		  
@@ -138,7 +142,7 @@ Implements Clock
 
 	#tag Method, Flags = &h0
 		Sub Stop()
-		  App.Log "Clock<" + Str( p_id ) + "> changing state to name to stopped."
+		  App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to stopped."
 		  
 		  p_clock.Stop
 		  

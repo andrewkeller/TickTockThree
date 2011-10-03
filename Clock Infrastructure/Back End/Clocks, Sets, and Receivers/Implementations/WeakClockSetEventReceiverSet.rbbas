@@ -6,6 +6,8 @@ Implements ClockSetEventReceiverSet
 		Sub AttachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSetEventReceiverSet interface.
 		  
+		  App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: attaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
+		  
 		  Me.Add cser
 		End Sub
 	#tag EndMethod
@@ -13,6 +15,8 @@ Implements ClockSetEventReceiverSet
 	#tag Method, Flags = &h0
 		Sub DetachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSetEventReceiverSet interface.
+		  
+		  App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: detaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
 		  
 		  Me.Remove cser
 		End Sub
@@ -47,6 +51,8 @@ Implements ClockSetEventReceiverSet
 		  If Not ( cdao Is Nil ) Then
 		    For Each er As ClockSetEventReceiver In Me.ListEventReceivers
 		      
+		      App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockSetEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdao.ObjectID ) + "> has been added to a set."
+		      
 		      er.ClockAdded cset, cdao
 		      
 		    Next
@@ -60,6 +66,8 @@ Implements ClockSetEventReceiverSet
 		  
 		  If Not ( cdao Is Nil ) Then
 		    For Each er As ClockSetEventReceiver In Me.ListEventReceivers
+		      
+		      App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockSetEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdao.ObjectID ) + "> has been removed from a set."
 		      
 		      er.ClockRemoved cset, cdao
 		      

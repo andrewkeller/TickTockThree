@@ -6,6 +6,8 @@ Implements ClockEventReceiverSet
 		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the ClockEventReceiverSet interface.
 		  
+		  App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		  
 		  Me.Add cer
 		End Sub
 	#tag EndMethod
@@ -13,6 +15,8 @@ Implements ClockEventReceiverSet
 	#tag Method, Flags = &h0
 		Sub DetachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the ClockEventReceiverSet interface.
+		  
+		  App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
 		  
 		  Me.Remove cer
 		End Sub
@@ -47,6 +51,8 @@ Implements ClockEventReceiverSet
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
 		      
+		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that the display name of Clock<" + Str( cdo.ObjectID ) + "> has changed."
+		      
 		      er.ClockDisplayNameChanged cdo
 		      
 		    Next
@@ -60,6 +66,8 @@ Implements ClockEventReceiverSet
 		  
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
+		      
+		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdo.ObjectID ) + "> has started."
 		      
 		      er.ClockStarted cdo
 		      
@@ -75,6 +83,8 @@ Implements ClockEventReceiverSet
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
 		      
+		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdo.ObjectID ) + "> has stopped."
+		      
 		      er.ClockStopped cdo
 		      
 		    Next
@@ -88,6 +98,8 @@ Implements ClockEventReceiverSet
 		  
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
+		      
+		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that the value of Clock<" + Str( cdo.ObjectID ) + "> has changed."
 		      
 		      er.ClockValueChanged cdo
 		      
