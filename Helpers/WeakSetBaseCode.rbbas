@@ -1,5 +1,6 @@
 #tag Class
 Protected Class WeakSetBaseCode
+Implements UniqueIDParticipator
 	#tag Method, Flags = &h1
 		Protected Sub Add(obj As UniqueIDParticipator)
 		  If obj Is Nil Then
@@ -20,6 +21,7 @@ Protected Class WeakSetBaseCode
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor()
+		  p_id = GetUniqueIndexKFS
 		  p_weakpool_by_uid = New Dictionary
 		End Sub
 	#tag EndMethod
@@ -64,6 +66,14 @@ Protected Class WeakSetBaseCode
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ObjectID() As Int64
+		  // Part of the UniqueIDParticipator interface.
+		  
+		  Return p_id
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
 		Protected Sub Remove(obj As UniqueIDParticipator)
 		  If obj Is Nil Then
@@ -80,9 +90,48 @@ Protected Class WeakSetBaseCode
 
 
 	#tag Property, Flags = &h1
+		Protected p_id As Int64
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected p_weakpool_by_uid As Dictionary
 	#tag EndProperty
 
 
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+	#tag EndViewBehavior
 End Class
 #tag EndClass

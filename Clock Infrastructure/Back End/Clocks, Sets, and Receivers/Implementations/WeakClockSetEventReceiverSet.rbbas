@@ -6,7 +6,7 @@ Implements ClockSetEventReceiverSet
 		Sub AttachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSetEventReceiverSet interface.
 		  
-		  App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: attaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
+		  App.Log "WeakClockSetEventReceiverSet<" + Str( p_id ) + ">: attaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
 		  
 		  Me.Add cser
 		End Sub
@@ -16,7 +16,7 @@ Implements ClockSetEventReceiverSet
 		Sub DetachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSetEventReceiverSet interface.
 		  
-		  App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: detaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
+		  App.Log "WeakClockSetEventReceiverSet<" + Str( p_id ) + ">: detaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
 		  
 		  Me.Remove cser
 		End Sub
@@ -51,7 +51,7 @@ Implements ClockSetEventReceiverSet
 		  If Not ( cdao Is Nil ) Then
 		    For Each er As ClockSetEventReceiver In Me.ListEventReceivers
 		      
-		      App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockSetEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdao.ObjectID ) + "> has been added to a set."
+		      App.Log "WeakClockSetEventReceiverSet<" + Str( p_id ) + ">: notifying ClockSetEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdao.ObjectID ) + "> has been added to a set."
 		      
 		      er.ClockAdded cset, cdao
 		      
@@ -67,7 +67,7 @@ Implements ClockSetEventReceiverSet
 		  If Not ( cdao Is Nil ) Then
 		    For Each er As ClockSetEventReceiver In Me.ListEventReceivers
 		      
-		      App.Log "WeakClockSetEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockSetEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdao.ObjectID ) + "> has been removed from a set."
+		      App.Log "WeakClockSetEventReceiverSet<" + Str( p_id ) + ">: notifying ClockSetEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdao.ObjectID ) + "> has been removed from a set."
 		      
 		      er.ClockRemoved cset, cdao
 		      

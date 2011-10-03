@@ -6,7 +6,7 @@ Implements ClockEventReceiverSet
 		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the ClockEventReceiverSet interface.
 		  
-		  App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		  App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
 		  
 		  Me.Add cer
 		End Sub
@@ -16,7 +16,7 @@ Implements ClockEventReceiverSet
 		Sub DetachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the ClockEventReceiverSet interface.
 		  
-		  App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		  App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
 		  
 		  Me.Remove cer
 		End Sub
@@ -51,7 +51,7 @@ Implements ClockEventReceiverSet
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
 		      
-		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that the display name of Clock<" + Str( cdo.ObjectID ) + "> has changed."
+		      App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that the display name of Clock<" + Str( cdo.ObjectID ) + "> has changed."
 		      
 		      er.ClockDisplayNameChanged cdo
 		      
@@ -67,7 +67,7 @@ Implements ClockEventReceiverSet
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
 		      
-		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdo.ObjectID ) + "> has started."
+		      App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdo.ObjectID ) + "> has started."
 		      
 		      er.ClockStarted cdo
 		      
@@ -83,7 +83,7 @@ Implements ClockEventReceiverSet
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
 		      
-		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdo.ObjectID ) + "> has stopped."
+		      App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that Clock<" + Str( cdo.ObjectID ) + "> has stopped."
 		      
 		      er.ClockStopped cdo
 		      
@@ -99,7 +99,7 @@ Implements ClockEventReceiverSet
 		  If Not ( cdo Is Nil ) Then
 		    For Each er As ClockEventReceiver In Me.ListEventReceivers
 		      
-		      App.Log "WeakClockEventReceiverSet<" + Str( cvt( Me ).Hash ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that the value of Clock<" + Str( cdo.ObjectID ) + "> has changed."
+		      App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: notifying ClockEventReceiver<" + Str( er.ObjectID ) + "> that the value of Clock<" + Str( cdo.ObjectID ) + "> has changed."
 		      
 		      er.ClockValueChanged cdo
 		      
@@ -109,5 +109,40 @@ Implements ClockEventReceiverSet
 	#tag EndMethod
 
 
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+	#tag EndViewBehavior
 End Class
 #tag EndClass
