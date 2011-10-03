@@ -7,7 +7,7 @@ Implements ClockSet
 		  // Part of the ClockSet interface.
 		  
 		  Me.Add c
-		  p_autoupdate_obj_pool.NotifyClockAdded c
+		  p_autoupdate_obj_pool.NotifyClockAdded Me, c
 		End Sub
 	#tag EndMethod
 
@@ -19,7 +19,7 @@ Implements ClockSet
 		  
 		  For Each clk As Clock In Me.ListClocks
 		    
-		    cser.ClockAdded clk
+		    cser.ClockAdded Me, clk
 		    
 		  Next
 		End Sub
@@ -40,7 +40,7 @@ Implements ClockSet
 		  
 		  For Each clk As Clock In Me.ListClocks
 		    
-		    cser.ClockRemoved clk
+		    cser.ClockRemoved Me, clk
 		    
 		  Next
 		End Sub
@@ -81,7 +81,7 @@ Implements ClockSet
 		  // Part of the ClockSet interface.
 		  
 		  Me.Remove c
-		  p_autoupdate_obj_pool.NotifyClockRemoved c
+		  p_autoupdate_obj_pool.NotifyClockRemoved Me, c
 		End Sub
 	#tag EndMethod
 

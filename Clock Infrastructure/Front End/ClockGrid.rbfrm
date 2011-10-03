@@ -95,7 +95,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockAdded(cdao As Clock)
+		Sub ClockAdded(cset As ClockSet, cdao As Clock)
 		  // Part of the ClockSetEventReceiver interface.
 		  
 		  Dim clkbtn As New ClockButton( cdao )
@@ -112,7 +112,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockRemoved(cdao As Clock)
+		Sub ClockRemoved(cset As ClockSet, cdao As Clock)
 		  // Part of the ClockSetEventReceiver interface.
 		  
 		  // The given clock has been removed from the clock set.

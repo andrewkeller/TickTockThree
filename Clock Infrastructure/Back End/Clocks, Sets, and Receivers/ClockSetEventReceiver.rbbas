@@ -2,13 +2,13 @@
 Protected Interface ClockSetEventReceiver
 Implements UniqueIDParticipator
 	#tag Method, Flags = &h0
-		Sub ClockAdded(cdao As Clock)
+		Sub ClockAdded(cset As ClockSet, cdao As Clock)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockRemoved(cdao As Clock)
+		Sub ClockRemoved(cset As ClockSet, cdao As Clock)
 		  
 		End Sub
 	#tag EndMethod

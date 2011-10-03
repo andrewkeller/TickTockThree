@@ -41,13 +41,13 @@ Implements ClockSetEventReceiverSet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub NotifyClockAdded(cdo As Clock)
+		Sub NotifyClockAdded(cset As ClockSet, cdao As Clock)
 		  // Part of the ClockSetEventReceiverSet interface.
 		  
-		  If Not ( cdo Is Nil ) Then
+		  If Not ( cdao Is Nil ) Then
 		    For Each er As ClockSetEventReceiver In Me.ListEventReceivers
 		      
-		      er.ClockAdded cdo
+		      er.ClockAdded cset, cdao
 		      
 		    Next
 		  End If
@@ -55,13 +55,13 @@ Implements ClockSetEventReceiverSet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub NotifyClockRemoved(cdo As Clock)
+		Sub NotifyClockRemoved(cset As ClockSet, cdao As Clock)
 		  // Part of the ClockSetEventReceiverSet interface.
 		  
-		  If Not ( cdo Is Nil ) Then
+		  If Not ( cdao Is Nil ) Then
 		    For Each er As ClockSetEventReceiver In Me.ListEventReceivers
 		      
-		      er.ClockRemoved cdo
+		      er.ClockRemoved cset, cdao
 		      
 		    Next
 		  End If
@@ -69,5 +69,40 @@ Implements ClockSetEventReceiverSet
 	#tag EndMethod
 
 
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			InheritedFrom="Object"
+		#tag EndViewProperty
+	#tag EndViewBehavior
 End Class
 #tag EndClass

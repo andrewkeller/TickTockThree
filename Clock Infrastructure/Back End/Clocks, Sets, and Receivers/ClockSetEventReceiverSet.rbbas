@@ -19,13 +19,13 @@ Protected Interface ClockSetEventReceiverSet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub NotifyClockAdded(cdo As Clock)
+		Sub NotifyClockAdded(cset As ClockSet, cdao As Clock)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub NotifyClockRemoved(cdo As Clock)
+		Sub NotifyClockRemoved(cset As ClockSet, cdao As Clock)
 		  
 		End Sub
 	#tag EndMethod

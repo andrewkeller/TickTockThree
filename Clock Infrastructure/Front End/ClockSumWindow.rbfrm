@@ -181,7 +181,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub ClockAdded(cdao As Clock)
+		Sub ClockAdded(cset As ClockSet, cdao As Clock)
 		  // Part of the ClockSetEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
@@ -220,7 +220,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClockRemoved(cdao As Clock)
+		Sub ClockRemoved(cset As ClockSet, cdao As Clock)
 		  // Part of the ClockSetEventReceiver interface.
 		  
 		  If Not ( cdao Is Nil ) Then
