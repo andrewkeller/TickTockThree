@@ -39,6 +39,18 @@ Implements ClockSet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Attributes( Hidden = True )  Sub Destructor()
+		  App.Log "WeakClockSet<" + Str( p_id ) + ">: deallocating; will remove all remaining clocks from this set now."
+		  
+		  For Each clk As Clock In ListClocks
+		    
+		    RemoveClock clk
+		    
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub DetachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSet interface.
 		  
