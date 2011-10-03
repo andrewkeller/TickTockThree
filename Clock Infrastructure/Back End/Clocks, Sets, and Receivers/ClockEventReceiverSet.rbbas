@@ -13,6 +13,12 @@ Protected Interface ClockEventReceiverSet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function HasClockEventReceiver(cer As ClockEventReceiver) As Boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function HoldsStrongReferencesToClockEventReceivers() As Boolean
 		  
 		End Function

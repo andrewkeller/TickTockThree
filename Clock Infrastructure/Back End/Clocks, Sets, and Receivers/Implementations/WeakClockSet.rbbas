@@ -6,10 +6,14 @@ Implements ClockSet
 		Sub AddClock(c As Clock)
 		  // Part of the ClockSet interface.
 		  
-		  App.Log "WeakClockSet<" + Str( p_id ) + ">: adding Clock<" + Str( c.ObjectID ) + ">."
-		  
-		  Me.Add c
-		  p_autoupdate_obj_pool.NotifyClockAdded Me, c
+		  If Not Me.HasClock( c ) Then
+		    
+		    App.Log "WeakClockSet<" + Str( p_id ) + ">: adding Clock<" + Str( c.ObjectID ) + ">."
+		    
+		    Me.Add c
+		    p_autoupdate_obj_pool.NotifyClockAdded Me, c
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -17,17 +21,20 @@ Implements ClockSet
 		Sub AttachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSet interface.
 		  
-		  App.Log "WeakClockSet<" + Str( p_id ) + ">: attaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
-		  
-		  p_autoupdate_obj_pool.AttachClockSetEventReceiver cser
-		  
-		  For Each clk As Clock In Me.ListClocks
+		  If Not p_autoupdate_obj_pool.HasClockSetEventReceiver( cser ) Then
 		    
-		    App.Log "WeakClockSet<" + Str( p_id ) + ">: notifying ClockSetEventReceiver<" + Str( cser.ObjectID ) + "> that Clock<" + Str( clk.ObjectID ) + "> exists."
+		    App.Log "WeakClockSet<" + Str( p_id ) + ">: attaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
 		    
-		    cser.ClockAdded Me, clk
+		    p_autoupdate_obj_pool.AttachClockSetEventReceiver cser
 		    
-		  Next
+		    For Each clk As Clock In Me.ListClocks
+		      
+		      App.Log "WeakClockSet<" + Str( p_id ) + ">: notifying ClockSetEventReceiver<" + Str( cser.ObjectID ) + "> that Clock<" + Str( clk.ObjectID ) + "> exists."
+		      
+		      cser.ClockAdded Me, clk
+		      
+		    Next
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -54,18 +61,37 @@ Implements ClockSet
 		Sub DetachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  // Part of the ClockSet interface.
 		  
-		  App.Log "WeakClockSet<" + Str( p_id ) + ">: detaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
-		  
-		  p_autoupdate_obj_pool.DetachClockSetEventReceiver cser
-		  
-		  For Each clk As Clock In Me.ListClocks
+		  If p_autoupdate_obj_pool.HasClockSetEventReceiver( cser ) Then
 		    
-		    App.Log "WeakClockSet<" + Str( p_id ) + ">: reminding ClockSetEventReceiver<" + Str( cser.ObjectID ) + "> that it should make sure it detaches from Clock<" + Str( clk.ObjectID ) + ">."
+		    App.Log "WeakClockSet<" + Str( p_id ) + ">: detaching ClockSetEventReceiver<" + Str( cser.ObjectID ) + ">."
 		    
-		    cser.ClockRemoved Me, clk
+		    p_autoupdate_obj_pool.DetachClockSetEventReceiver cser
 		    
-		  Next
+		    For Each clk As Clock In Me.ListClocks
+		      
+		      App.Log "WeakClockSet<" + Str( p_id ) + ">: reminding ClockSetEventReceiver<" + Str( cser.ObjectID ) + "> that it should make sure it detaches from Clock<" + Str( clk.ObjectID ) + ">."
+		      
+		      cser.ClockRemoved Me, clk
+		      
+		    Next
+		  End If
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasClock(c As Clock) As Boolean
+		  // Part of the ClockSet interface.
+		  
+		  Return Me.Has( c )
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasClockSetEventReceiver(cser As ClockSetEventReceiver) As Boolean
+		  // Part of the ClockSet interface.
+		  
+		  Return p_autoupdate_obj_pool.HasClockSetEventReceiver( cser )
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -102,10 +128,14 @@ Implements ClockSet
 		Sub RemoveClock(c As Clock)
 		  // Part of the ClockSet interface.
 		  
-		  App.Log "WeakClockSet<" + Str( p_id ) + ">: removing Clock<" + Str( c.ObjectID ) + ">."
-		  
-		  Me.Remove c
-		  p_autoupdate_obj_pool.NotifyClockRemoved Me, c
+		  If Me.HasClock( c ) Then
+		    
+		    App.Log "WeakClockSet<" + Str( p_id ) + ">: removing Clock<" + Str( c.ObjectID ) + ">."
+		    
+		    Me.Remove c
+		    p_autoupdate_obj_pool.NotifyClockRemoved Me, c
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 

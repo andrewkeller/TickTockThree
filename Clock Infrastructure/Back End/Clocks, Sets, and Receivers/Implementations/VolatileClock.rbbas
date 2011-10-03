@@ -5,9 +5,13 @@ Implements Clock
 		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the Clock interface.
 		  
-		  App.Log "VolatileClock<" + Str( p_id ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
-		  
-		  p_autoupdate_obj_pool.AttachClockEventReceiver cer
+		  If Not p_autoupdate_obj_pool.HasClockEventReceiver( cer ) Then
+		    
+		    App.Log "VolatileClock<" + Str( p_id ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		    
+		    p_autoupdate_obj_pool.AttachClockEventReceiver cer
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -63,9 +67,13 @@ Implements Clock
 		Sub DetachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the Clock interface.
 		  
-		  App.Log "VolatileClock<" + Str( p_id ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
-		  
-		  p_autoupdate_obj_pool.DetachClockEventReceiver cer
+		  If p_autoupdate_obj_pool.HasClockEventReceiver( cer ) Then
+		    
+		    App.Log "VolatileClock<" + Str( p_id ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		    
+		    p_autoupdate_obj_pool.DetachClockEventReceiver cer
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -77,11 +85,15 @@ Implements Clock
 
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
-		  App.Log "VolatileClock<" + Str( p_id ) + ">: changing display name to '" + new_value + "'."
-		  
-		  p_displayname = new_value
-		  
-		  p_autoupdate_obj_pool.NotifyClockDisplayNameChanged Me
+		  If StrComp( p_displayname, new_value, 0 ) <> 0 Then
+		    
+		    App.Log "VolatileClock<" + Str( p_id ) + ">: changing display name to '" + new_value + "'."
+		    
+		    p_displayname = new_value
+		    
+		    p_autoupdate_obj_pool.NotifyClockDisplayNameChanged Me
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -132,21 +144,13 @@ Implements Clock
 
 	#tag Method, Flags = &h0
 		Sub Start()
-		  App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to running."
-		  
-		  p_clock.Start
-		  
-		  p_autoupdate_obj_pool.NotifyClockStarted Me
+		  IsRunning = True
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Stop()
-		  App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to stopped."
-		  
-		  p_clock.Stop
-		  
-		  p_autoupdate_obj_pool.NotifyClockStopped Me
+		  IsRunning = False
 		End Sub
 	#tag EndMethod
 

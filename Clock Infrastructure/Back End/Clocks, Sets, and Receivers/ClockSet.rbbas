@@ -19,6 +19,18 @@ Protected Interface ClockSet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function HasClock(c As Clock) As Boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasClockSetEventReceiver(cser As ClockSetEventReceiver) As Boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function HoldsStrongReferencesToClockObjects() As Boolean
 		  
 		End Function

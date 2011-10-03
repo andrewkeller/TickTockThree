@@ -6,9 +6,13 @@ Implements ClockEventReceiverSet
 		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the ClockEventReceiverSet interface.
 		  
-		  App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
-		  
-		  Me.Add cer
+		  If Not Me.HasClockEventReceiver( cer ) Then
+		    
+		    App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: attaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		    
+		    Me.Add cer
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -16,10 +20,22 @@ Implements ClockEventReceiverSet
 		Sub DetachClockEventReceiver(cer As ClockEventReceiver)
 		  // Part of the ClockEventReceiverSet interface.
 		  
-		  App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
-		  
-		  Me.Remove cer
+		  If Me.HasClockEventReceiver( cer ) Then
+		    
+		    App.Log "WeakClockEventReceiverSet<" + Str( p_id ) + ">: detaching ClockEventReceiver<" + Str( cer.ObjectID ) + ">."
+		    
+		    Me.Remove cer
+		    
+		  End If
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasClockEventReceiver(cer As ClockEventReceiver) As Boolean
+		  // Part of the ClockEventReceiverSet interface.
+		  
+		  Return Me.Has( cer )
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
