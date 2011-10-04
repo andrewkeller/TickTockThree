@@ -155,8 +155,6 @@ End
 		  p_clockset.AttachClockSetEventReceiver Self
 		  
 		  Super.Constructor
-		  
-		  ' AddNewVolatileClock
 		End Sub
 	#tag EndMethod
 

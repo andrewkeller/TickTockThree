@@ -89,4 +89,9 @@ End
 		  
 		End Function
 	#tag EndEvent
+	#tag Event
+		Sub Open()
+		  Me.AddNewVolatileClock
+		End Sub
+	#tag EndEvent
 #tag EndEvents
