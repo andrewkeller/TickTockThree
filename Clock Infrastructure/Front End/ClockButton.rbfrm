@@ -204,7 +204,15 @@ End
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
-		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( p_clock.ObjectID ) + ">)."
+		  If p_clock Is Nil Then
+		    
+		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( p_severed_clock_id ) + ">)."
+		    
+		  Else
+		    
+		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( p_clock.ObjectID ) + ">)."
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -247,6 +255,14 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SeverReferenceToClock()
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: severing the reference to Clock<" + Str( p_clock.ObjectID ) + ">."
+		  p_severed_clock_id = p_clock.ObjectID
+		  p_clock = Nil
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Value() As DurationKFS
 		  Return p_clock.Value
 		End Function
@@ -280,6 +296,10 @@ End
 
 	#tag Property, Flags = &h1
 		Protected p_id As Int64
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_severed_clock_id As Int64
 	#tag EndProperty
 
 
