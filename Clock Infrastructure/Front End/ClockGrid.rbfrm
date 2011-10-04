@@ -162,8 +162,7 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Function GetInsertionPointOfNewButton(clkbtn As ClockButton) As Integer
-		  Return 0
-		  
+		  Return UBound( p_clock_button_order ) + 1
 		End Function
 	#tag EndMethod
 
