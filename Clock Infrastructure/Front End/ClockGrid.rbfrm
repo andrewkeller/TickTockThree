@@ -105,6 +105,8 @@ End
 		  p_clock_buttons.Value( clkbtn.ObjectID ) = New WeakRef( clkbtn )
 		  
 		  clkbtn.EmbedWithin Self
+		  AddHandler clkbtn.ClockStarted, WeakAddressOf ClockStartedHook
+		  AddHandler clkbtn.ClockStopped, WeakAddressOf ClockStoppedHook
 		  AddHandler clkbtn.UserWantsClockClosed, WeakAddressOf UserWantsClockClosedHook
 		  
 		  RepositionClocks
@@ -140,6 +142,32 @@ End
 		  // Reposition the buttons:
 		  
 		  RepositionClocks
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ClockStartedHook(clkbtn As ClockButton)
+		  clkbtn.HasBackColor = True
+		  clkbtn.Refresh
+		  
+		  Dim clk As Clock = clkbtn.Clock
+		  
+		  If Not Keyboard.AsyncShiftKey Then
+		    For Each c As Clock In p_clockset.ListClocks
+		      If Not ( c Is clk ) Then
+		        If c.IsRunning Then
+		          c.Stop
+		        End If
+		      End If
+		    Next
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ClockStoppedHook(clkbtn As ClockButton)
+		  clkbtn.HasBackColor = False
+		  clkbtn.Refresh
 		End Sub
 	#tag EndMethod
 
