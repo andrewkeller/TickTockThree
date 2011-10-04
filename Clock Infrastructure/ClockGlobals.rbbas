@@ -1,5 +1,11 @@
 #tag Module
 Protected Module ClockGlobals
+	#tag Method, Flags = &h1
+		Protected Sub DestroyGlobalClockSet()
+		  p_global_clock_set = Nil
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function FormatAsHHMMSS(Extends d As DurationKFS) As String
 		  Dim h, m, s As Integer
@@ -75,8 +81,8 @@ Protected Module ClockGlobals
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h1
-		Protected p_global_clock_set As ClockSet
+	#tag Property, Flags = &h21
+		Private p_global_clock_set As ClockSet
 	#tag EndProperty
 
 

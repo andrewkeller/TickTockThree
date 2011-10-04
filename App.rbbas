@@ -37,6 +37,12 @@ Implements Logger
 	#tag EndEvent
 
 	#tag Event
+		Sub Close()
+		  ClockGlobals.DestroyGlobalClockSet
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Open()
 		  p_log = New SimpleLogger
 		  p_user_wants_to_save_singleton_windows = True
