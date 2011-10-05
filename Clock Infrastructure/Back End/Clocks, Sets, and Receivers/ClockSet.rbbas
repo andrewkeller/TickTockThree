@@ -1,5 +1,6 @@
 #tag Interface
 Protected Interface ClockSet
+Implements UniqueIDParticipator
 	#tag Method, Flags = &h0
 		Sub AddClock(c As Clock)
 		  

@@ -1,5 +1,6 @@
 #tag Interface
 Protected Interface ClockEventReceiverSet
+Implements UniqueIDParticipator
 	#tag Method, Flags = &h0
 		Sub AttachClockEventReceiver(cer As ClockEventReceiver)
 		  
