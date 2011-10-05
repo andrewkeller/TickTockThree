@@ -347,6 +347,10 @@ End
 	#tag EndProperty
 
 
+	#tag Constant, Name = kRunningDotMarginInPixels, Type = Double, Dynamic = False, Default = \"1", Scope = Public
+	#tag EndConstant
+
+
 #tag EndWindowCode
 
 #tag Events lstClocks
@@ -369,6 +373,30 @@ End
 		  End If
 		  
 		  Return False
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function CellBackgroundPaint(g As Graphics, row As Integer, column As Integer) As Boolean
+		  If row < Me.ListCount Then
+		    If column = 1 Then
+		      If DurationKFS( Me.CellTag( row, 1 ) ).IsRunning Then
+		        
+		        Dim diameter As Integer = g.Height - kRunningDotMarginInPixels * 2
+		        Dim x, y As Integer
+		        
+		        g.ForeColor = kDefaultActiveClockColor
+		        
+		        g.PenHeight = diameter
+		        g.PenWidth = diameter
+		        
+		        x = g.Width - diameter - kRunningDotMarginInPixels * 2
+		        y = 0
+		        
+		        g.DrawLine x, y, x, y
+		        
+		      End If
+		    End If
+		  End If
 		End Function
 	#tag EndEvent
 #tag EndEvents
