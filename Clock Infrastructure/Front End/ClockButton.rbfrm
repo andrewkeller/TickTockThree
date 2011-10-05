@@ -157,6 +157,7 @@ End
 		Sub ClockStarted(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
+		  bvlAction.Value = True
 		  tmrRefresh.Mode = Timer.ModeMultiple
 		  RefreshLabel
 		  RaiseEvent ClockStarted
@@ -167,6 +168,7 @@ End
 		Sub ClockStopped(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
+		  bvlAction.Value = False
 		  tmrRefresh.Mode = Timer.ModeOff
 		  RefreshLabel
 		  RaiseEvent ClockStopped
