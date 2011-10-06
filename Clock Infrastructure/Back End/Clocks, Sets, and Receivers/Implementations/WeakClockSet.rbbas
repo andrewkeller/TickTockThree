@@ -38,6 +38,14 @@ Implements ClockSet
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ClockCount() As Integer
+		  // Part of the ClockSet interface.
+		  
+		  Return p_weakpool_by_uid.Count
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h1000
 		Attributes( Hidden = True )  Sub Constructor()
 		  p_autoupdate_obj_pool = New WeakClockSetEventReceiverSet
@@ -47,7 +55,7 @@ Implements ClockSet
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
-		  App.Log "WeakClockSet<" + Str( p_id ) + ">: deallocating; will remove all remaining clocks from this set now."
+		  App.Log "WeakClockSet<" + Str( p_id ) + ">: deallocating; will remove all remaining clocks (" + Str( Me.ClockCount ) + ") from this set."
 		  
 		  For Each clk As Clock In ListClocks
 		    

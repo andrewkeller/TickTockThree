@@ -14,6 +14,12 @@ Implements UniqueIDParticipator
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ClockCount() As Integer
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub DetachClockSetEventReceiver(cser As ClockSetEventReceiver)
 		  
 		End Sub
