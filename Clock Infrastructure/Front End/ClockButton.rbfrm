@@ -127,9 +127,14 @@ End
 		Function ContextualMenuAction(hitItem as MenuItem) As Boolean
 		  If hitItem.Text = "Destroy Clock" Then
 		    
-		    App.Log "ClockButton<" + Str( p_id ) + ">: user wants to destroy this clock button.  Associated clock: Clock<" + Str( p_clock.ObjectID ) + ">."
-		    
-		    RaiseEvent UserWantsClockClosed
+		    Dim c As Clock = Self.Clock
+		    If Not ( c Is Nil ) Then
+		      
+		      App.Log "ClockButton<" + Str( p_id ) + ">: user wants to destroy this clock button.  Associated clock: Clock<" + Str( c.ObjectID ) + ">."
+		      
+		      RaiseEvent UserWantsClockClosed
+		      
+		    End If
 		    
 		    Return True
 		    
@@ -140,7 +145,19 @@ End
 
 	#tag Method, Flags = &h0
 		Function Clock() As Clock
-		  Return p_clock
+		  If Not ( p_clock_strongref Is Nil ) Then
+		    
+		    Return p_clock_strongref
+		    
+		  ElseIf Not ( p_clock_weakref Is Nil ) Then
+		    
+		    Dim v As Variant = p_clock_weakref.Value
+		    
+		    If v IsA Clock Then Return Clock( v )
+		    
+		  End If
+		  
+		  Return Nil
 		End Function
 	#tag EndMethod
 
@@ -148,8 +165,13 @@ End
 		Sub ClockDisplayNameChanged(cdao As Clock)
 		  // Part of the ClockEventReceiver interface.
 		  
-		  bvlAction.Caption = p_clock.DisplayName
-		  RaiseEvent DisplayNameChanged
+		  Dim c As Clock = Self.Clock
+		  If Not ( c Is Nil ) Then
+		    
+		    bvlAction.Caption = c.DisplayName
+		    RaiseEvent DisplayNameChanged
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -188,31 +210,39 @@ End
 		Attributes( Hidden = True )  Sub Constructor()
 		  p_id = GetUniqueIndexKFS
 		  Super.Constructor
-		  p_clock = New VolatileClock
-		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
-		  p_clock.AttachClockEventReceiver Me
+		  p_clock_strongref = New VolatileClock
+		  p_clock_weakref = Nil
+		  p_severed_clock_id = p_clock_strongref.ObjectID
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: initializing with Clock<" + Str( p_clock_strongref.ObjectID ) + ">."
+		  Self.Clock.AttachClockEventReceiver Me
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Attributes( Hidden = True )  Sub Constructor(cdao As Clock)
+		Attributes( Hidden = True )  Sub Constructor(cdao As Clock, use_hard_reference As Boolean)
 		  p_id = GetUniqueIndexKFS
 		  Super.Constructor
-		  p_clock = cdao
-		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: initializing with Clock<" + Str( p_clock.ObjectID ) + ">."
-		  p_clock.AttachClockEventReceiver Me
+		  If use_hard_reference Then
+		    p_clock_strongref = cdao
+		  Else
+		    p_clock_weakref = New WeakRef( cdao )
+		  End If
+		  p_severed_clock_id = cdao.ObjectID
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: initializing with Clock<" + Str( cdao.ObjectID ) + ">."
+		  Self.Clock.AttachClockEventReceiver Me
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
-		  If p_clock Is Nil Then
+		  Dim c As Clock = Self.Clock
+		  If c Is Nil Then
 		    
 		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( p_severed_clock_id ) + ">)."
 		    
 		  Else
 		    
-		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( p_clock.ObjectID ) + ">)."
+		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( c.ObjectID ) + ">)."
 		    
 		  End If
 		End Sub
@@ -220,25 +250,55 @@ End
 
 	#tag Method, Flags = &h0
 		Function DisplayName() As String
-		  Return p_clock.DisplayName
+		  Dim c As Clock = Self.Clock
+		  If Not ( c Is Nil ) Then
+		    
+		    Return c.DisplayName
+		    
+		  End If
+		  
+		  Return ""
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DisplayName(Assigns new_value As String)
-		  p_clock.DisplayName = new_value
+		  Dim c As Clock = Self.Clock
+		  If Not ( c Is Nil ) Then
+		    
+		    c.DisplayName = new_value
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function HoldsStrongReferenceToTheClock() As Boolean
+		  Return Not ( p_clock_strongref Is Nil )
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function IsPressed() As Boolean
-		  Return p_clock.IsRunning
+		  Dim c As Clock = Self.Clock
+		  If Not ( c Is Nil ) Then
+		    
+		    Return c.IsRunning
+		    
+		  End If
+		  
+		  Return False
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub IsPressed(Assigns new_value As Boolean)
-		  p_clock.IsRunning = new_value
+		  Dim c As Clock = Self.Clock
+		  If Not ( c Is Nil ) Then
+		    
+		    c.IsRunning = new_value
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
@@ -252,21 +312,43 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub RefreshLabel()
-		  lblTotalTime.Text = p_clock.Value.FormatAsHHMMSS
+		  Dim c As Clock = Self.Clock
+		  If Not ( c Is Nil ) Then
+		    
+		    lblTotalTime.Text = c.Value.FormatAsHHMMSS
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SeverReferenceToClock()
-		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: severing the reference to Clock<" + Str( p_clock.ObjectID ) + ">."
-		  p_severed_clock_id = p_clock.ObjectID
-		  p_clock = Nil
+		  Dim c As Clock = Self.Clock
+		  If c Is Nil Then
+		    
+		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: already severed from Clock<" + Str( p_severed_clock_id ) + ">."
+		    
+		  Else
+		    
+		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: severing the reference to Clock<" + Str( c.ObjectID ) + ">."
+		    p_severed_clock_id = c.ObjectID
+		    p_clock_strongref = Nil
+		    p_clock_weakref = Nil
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Value() As DurationKFS
-		  Return p_clock.Value
+		  Dim c As Clock = Self.Clock
+		  If Not ( c Is Nil ) Then
+		    
+		    Return c.Value
+		    
+		  End If
+		  
+		  Return New DurationKFS
 		End Function
 	#tag EndMethod
 
@@ -293,7 +375,11 @@ End
 
 
 	#tag Property, Flags = &h1
-		Protected p_clock As Clock
+		Protected p_clock_strongref As Clock
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_clock_weakref As WeakRef
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -310,7 +396,7 @@ End
 #tag Events bvlAction
 	#tag Event
 		Sub Action()
-		  p_clock.IsRunning = Me.Value
+		  Self.IsPressed = Me.Value
 		End Sub
 	#tag EndEvent
 #tag EndEvents

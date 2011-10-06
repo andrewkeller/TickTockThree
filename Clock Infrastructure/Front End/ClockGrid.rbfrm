@@ -98,7 +98,7 @@ End
 		Sub ClockAdded(cset As ClockSet, cdao As Clock)
 		  // Part of the ClockSetEventReceiver interface.
 		  
-		  Dim clkbtn As New ClockButton( cdao )
+		  Dim clkbtn As New ClockButton( cdao, False )
 		  
 		  p_clock_button_order.Insert GetInsertionPointOfNewButton( clkbtn ), clkbtn.ObjectID
 		  
@@ -187,7 +187,7 @@ End
 		  
 		  p_clock_buttons = New Dictionary
 		  
-		  p_clockset = New WeakClockSet
+		  p_clockset = New StrongClockSet
 		  p_clockset.AttachClockSetEventReceiver Self
 		  
 		  Super.Constructor
@@ -286,19 +286,6 @@ End
 	#tag Method, Flags = &h1
 		Protected Sub UserWantsClockClosedHook(clkbtn As ClockButton)
 		  p_clockset.RemoveClock clkbtn.Clock
-		  
-		  // This ClockButton is one of the few "critical reference holders"
-		  // - that is, when clkbtn deallocates, that very well may cause
-		  // the associated Clock to also get deallocated, which would
-		  // remove it from the global set and cause other things to happen.
-		  
-		  // However, I've been having a problem with ClockButtons not
-		  // deallocating.  You can imagine the trouble that causes.
-		  
-		  // So, here's a hack to get around it.  I want the reference
-		  // to the Clock lost, so let's lose the reference.
-		  
-		  clkbtn.SeverReferenceToClock
 		End Sub
 	#tag EndMethod
 
