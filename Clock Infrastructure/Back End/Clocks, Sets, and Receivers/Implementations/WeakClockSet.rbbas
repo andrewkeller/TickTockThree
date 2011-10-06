@@ -133,6 +133,20 @@ Implements ClockSet
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub RemoveAllClocks()
+		  // Part of the ClockSet interface.
+		  
+		  App.Log "WeakClockSet<" + Str( p_id ) + ">: removing all Clocks."
+		  
+		  For Each clk As Clock In Me.ListClocks
+		    
+		    RemoveClock clk
+		    
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RemoveClock(c As Clock)
 		  // Part of the ClockSet interface.
 		  

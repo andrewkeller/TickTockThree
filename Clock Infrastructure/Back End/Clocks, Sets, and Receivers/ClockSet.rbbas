@@ -56,6 +56,12 @@ Implements UniqueIDParticipator
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub RemoveAllClocks()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RemoveClock(c As Clock)
 		  
 		End Sub
