@@ -1,5 +1,5 @@
 #tag Window
-Begin Window ClockSumWindow Implements ClockEventReceiver, ClockSetEventReceiver
+Begin Window ClockSumWindow Implements ClockEventReceiver,ClockSetEventReceiver
    BackColor       =   &hFFFFFF
    Backdrop        =   ""
    CloseButton     =   True
