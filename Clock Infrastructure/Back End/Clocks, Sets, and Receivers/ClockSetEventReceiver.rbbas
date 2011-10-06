@@ -13,6 +13,12 @@ Implements UniqueIDParticipator
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ClockSetDestroyed(cset As ClockSet)
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

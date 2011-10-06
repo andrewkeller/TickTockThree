@@ -92,6 +92,22 @@ Implements ClockSetEventReceiverSet
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub NotifyClockSetDestroyed(cset As ClockSet)
+		  // Part of the ClockSetEventReceiverSet interface.
+		  
+		  If Not ( cset Is Nil ) Then
+		    For Each er As ClockSetEventReceiver In Me.ListEventReceivers
+		      
+		      App.Log "WeakClockSetEventReceiverSet<" + Str( p_id ) + ">: notifying ClockSetEventReceiver<" + Str( er.ObjectID ) + "> that ClockSet<" + Str( cset.ObjectID ) + "> is being destroyed."
+		      
+		      er.ClockSetDestroyed cset
+		      
+		    Next
+		  End If
+		End Sub
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

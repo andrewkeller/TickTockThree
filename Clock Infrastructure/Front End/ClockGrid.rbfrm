@@ -145,6 +145,14 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub ClockSetDestroyed(cset As ClockSet)
+		  // Part of the ClockSetEventReceiver interface.
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
 		Protected Sub ClockStartedHook(clkbtn As ClockButton)
 		  clkbtn.HasBackColor = True
