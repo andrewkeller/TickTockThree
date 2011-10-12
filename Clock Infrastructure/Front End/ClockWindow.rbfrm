@@ -91,7 +91,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Open()
-		  Me.AddNewVolatileClock
+		  Me.AddNewVolatileClock False
 		End Sub
 	#tag EndEvent
 #tag EndEvents

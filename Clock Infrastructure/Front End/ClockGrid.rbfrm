@@ -59,8 +59,17 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub AddNewVolatileClock()
-		  p_clockset.AddClock New VolatileClock
+		Sub AddNewVolatileClock(interactive As Boolean = True)
+		  Dim c As New VolatileClock
+		  Dim new_name As String = c.DisplayName
+		  
+		  If Not interactive Or EnterStringWindow.GetString( "New Clock", "Please enter the new name for a new clock:", new_name ) Then
+		    
+		    c.DisplayName = new_name
+		    
+		    p_clockset.AddClock c
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 
