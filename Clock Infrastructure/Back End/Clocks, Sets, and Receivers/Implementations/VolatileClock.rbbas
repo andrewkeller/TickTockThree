@@ -11,6 +11,9 @@ Implements Clock
 		    
 		    p_autoupdate_obj_pool.AttachClockEventReceiver cer
 		    
+		    cer.ClockDisplayNameChanged Me
+		    cer.ClockValueChanged Me
+		    
 		  End If
 		End Sub
 	#tag EndMethod
