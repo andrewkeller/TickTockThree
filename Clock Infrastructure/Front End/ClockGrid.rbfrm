@@ -114,11 +114,18 @@ End
 		  p_clock_buttons.Value( clkbtn.ObjectID ) = New WeakRef( clkbtn )
 		  
 		  clkbtn.EmbedWithin Self
+		  AddHandler clkbtn.DisplayNameChanged, WeakAddressOf ClockDisplayNameChangedHook
 		  AddHandler clkbtn.ClockStarted, WeakAddressOf ClockStartedHook
 		  AddHandler clkbtn.ClockStopped, WeakAddressOf ClockStoppedHook
 		  AddHandler clkbtn.UserWantsClockClosed, WeakAddressOf UserWantsClockClosedHook
 		  
 		  RepositionClocks
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ClockDisplayNameChangedHook(clkbtn As ClockButton)
+		  ResortButtons
 		End Sub
 	#tag EndMethod
 
