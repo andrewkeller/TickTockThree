@@ -214,7 +214,13 @@ End
 		Protected Function DefaultClockComparator(clock1 As Clock, clock2 As Clock, ByRef result As Integer) As Boolean
 		  If Not RaiseEvent CompareClocks( clock1, clock2, result ) Then
 		    
-		    result = StrComp( clock1.DisplayName, clock2.DisplayName, 0 )
+		    If clock1.DisplayName < clock2.DisplayName Then
+		      result = -1
+		    ElseIf clock1.DisplayName > clock2.DisplayName Then
+		      result = 1
+		    Else
+		      result = 0
+		    End If
 		    
 		  End If
 		  

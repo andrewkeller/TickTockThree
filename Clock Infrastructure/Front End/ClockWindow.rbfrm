@@ -83,7 +83,13 @@ End
 		Function CompareClocks(clock1 As Clock, clock2 As Clock, ByRef result As Integer) As Boolean
 		  // For all nodes, sort lexicographically
 		  
-		  result = StrComp( clock1.DisplayName, clock2.DisplayName, 0 )
+		  If clock1.DisplayName < clock2.DisplayName Then
+		    result = -1
+		  ElseIf clock1.DisplayName > clock2.DisplayName Then
+		    result = 1
+		  Else
+		    result = 0
+		  End If
 		  
 		  Return True
 		  
