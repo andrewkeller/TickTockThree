@@ -211,8 +211,52 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
+		Protected Function DefaultClockComparator(button1id As Int64, button2id As Int64, ByRef result As Integer) As Boolean
+		  If Not RaiseEvent CompareClocks( button1id, button2id, result ) Then
+		    
+		    result = StrComp( Me.ButtonDisplayName( button1id ), Me.ButtonDisplayName( button2id ), 1 )
+		    
+		  End If
+		  
+		  Return True
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
 		Protected Function GetInsertionPointOfNewButton(clkbtn As ClockButton) As Integer
-		  Return UBound( p_clock_button_order ) + 1
+		  Return GetInsertionPointOfNewButton( clkbtn, p_clock_button_order )
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function GetInsertionPointOfNewButton(clkbtn As ClockButton, button_order() As Int64) As Integer
+		  Dim greater_than_index, less_than_index As Integer
+		  
+		  greater_than_index = -1
+		  less_than_index = UBound( button_order ) + 1
+		  
+		  While less_than_index - greater_than_index > 1
+		    
+		    Dim split_at As Integer = ( greater_than_index + less_than_index ) / 2
+		    
+		    Dim split_onto As Integer
+		    
+		    If Not DefaultClockComparator( button_order(split_at), clkbtn.ObjectID, split_onto ) Then
+		      App.Log CurrentMethodName.Replace( ".", "<" + Str( p_id ) + ">." ) + ": error while finding the insertion index: the comparator did not report an answer when comparing against index " + Str( split_at ) + "."
+		      Return split_at + 1
+		    End If
+		    
+		    If split_onto > 0 Then
+		      greater_than_index = split_onto
+		    ElseIf split_onto < 0 Then
+		      less_than_index = split_onto
+		    Else
+		      Return split_onto + 1
+		    End If
+		    
+		  Wend
+		  
+		  Return less_than_index
 		End Function
 	#tag EndMethod
 
