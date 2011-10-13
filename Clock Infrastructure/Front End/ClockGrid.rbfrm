@@ -229,6 +229,24 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
+		Protected Function GenerateBrandNewButtonSortOrderArray() As Int64()
+		  Dim new_clock_button_order() As Int64
+		  
+		  For Each cbid As Int64 In p_clock_button_order
+		    
+		    Dim cb As ClockButton = ClockButton( WeakRef( p_clock_buttons.Value( cbid ) ).Value )
+		    
+		    Dim idx As Integer = GetInsertionPointOfNewButton( cb, new_clock_button_order )
+		    
+		    new_clock_button_order.Insert idx, cbid
+		    
+		  Next
+		  
+		  Return new_clock_button_order
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
 		Protected Function GetInsertionPointOfNewButton(clkbtn As ClockButton) As Integer
 		  Return GetInsertionPointOfNewButton( clkbtn, p_clock_button_order )
 		End Function
@@ -349,7 +367,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ResortButtons()
+		  p_clock_button_order = GenerateBrandNewButtonSortOrderArray
 		  
+		  RepositionClocks
 		End Sub
 	#tag EndMethod
 
