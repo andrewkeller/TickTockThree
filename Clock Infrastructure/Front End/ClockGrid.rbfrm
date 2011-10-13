@@ -211,10 +211,10 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Function DefaultClockComparator(button1id As Int64, button2id As Int64, ByRef result As Integer) As Boolean
-		  If Not RaiseEvent CompareClocks( button1id, button2id, result ) Then
+		Protected Function DefaultClockComparator(clock1 As Clock, clock2 As Clock, ByRef result As Integer) As Boolean
+		  If Not RaiseEvent CompareClocks( clock1, clock2, result ) Then
 		    
-		    result = StrComp( Me.ButtonDisplayName( button1id ), Me.ButtonDisplayName( button2id ), 1 )
+		    result = StrComp( clock1.DisplayName, clock2.DisplayName, 0 )
 		    
 		  End If
 		  
@@ -239,19 +239,23 @@ End
 		    
 		    Dim split_at As Integer = ( greater_than_index + less_than_index ) / 2
 		    
+		    Dim w As WeakRef = p_clock_buttons.Value( button_order( split_at ) )
+		    Dim v As Variant = w.Value
+		    Dim cb As ClockButton = ClockButton( v )
+		    
 		    Dim split_onto As Integer
 		    
-		    If Not DefaultClockComparator( button_order(split_at), clkbtn.ObjectID, split_onto ) Then
-		      App.Log CurrentMethodName.Replace( ".", "<" + Str( p_id ) + ">." ) + ": error while finding the insertion index: the comparator did not report an answer when comparing against index " + Str( split_at ) + "."
+		    If Not DefaultClockComparator( cb.Clock, clkbtn.Clock, split_onto ) Then
+		      App.Log CurrentMethodName.Replace( ".", "<" + Str( p_id ) + ">." ) + ": error while finding the insertion index: the comparator did not report an answer when comparing against index " + Str( split_at ) + " ('" + cb.DisplayName + "')."
 		      Return split_at + 1
 		    End If
 		    
-		    If split_onto > 0 Then
-		      greater_than_index = split_onto
-		    ElseIf split_onto < 0 Then
-		      less_than_index = split_onto
+		    If split_onto < 0 Then
+		      greater_than_index = split_at
+		    ElseIf split_onto > 0 Then
+		      less_than_index = split_at
 		    Else
-		      Return split_onto + 1
+		      Return split_at + 1
 		    End If
 		    
 		  Wend
@@ -351,7 +355,7 @@ End
 
 
 	#tag Hook, Flags = &h0
-		Event CompareClocks(button1id As Int64, button2id As Int64, ByRef result As Integer) As Boolean
+		Event CompareClocks(clock1 As Clock, clock2 As Clock, ByRef result As Integer) As Boolean
 	#tag EndHook
 
 
