@@ -263,14 +263,12 @@ End
 		    
 		    Dim split_at As Integer = ( greater_than_index + less_than_index ) / 2
 		    
-		    Dim w As WeakRef = p_clock_buttons.Value( button_order( split_at ) )
-		    Dim v As Variant = w.Value
-		    Dim cb As ClockButton = ClockButton( v )
+		    Dim cb As ClockButton = ClockButton( WeakRef( p_clock_buttons.Value( button_order( split_at ) ) ).Value )
 		    
 		    Dim split_onto As Integer
 		    
 		    If Not DefaultClockComparator( cb.Clock, clkbtn.Clock, split_onto ) Then
-		      App.Log CurrentMethodName.Replace( ".", "<" + Str( p_id ) + ">." ) + ": error while finding the insertion index: the comparator did not report an answer when comparing against index " + Str( split_at ) + " ('" + cb.DisplayName + "')."
+		      App.Log CurrentMethodName.Replace( ".", "<" + Str( p_id ) + ">." ) + ": the comparator did not report an answer when comparing against index " + Str( split_at ) + " ('" + cb.DisplayName + "')."
 		      Return split_at + 1
 		    End If
 		    
