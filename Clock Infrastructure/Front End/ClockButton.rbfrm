@@ -168,7 +168,12 @@ End
 		  Dim c As Clock = Self.Clock
 		  If Not ( c Is Nil ) Then
 		    
-		    bvlAction.Caption = c.DisplayName
+		    #if TargetWin32 then
+		      bvlAction.Caption = c.DisplayName.ReplaceAll( "&", "&&" )
+		    #else
+		      bvlAction.Caption = c.DisplayName
+		    #endif
+		    
 		    RaiseEvent DisplayNameChanged
 		    
 		  End If
