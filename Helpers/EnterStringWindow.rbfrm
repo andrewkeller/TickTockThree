@@ -46,7 +46,6 @@ Begin Window EnterStringWindow
       Selectable      =   False
       TabIndex        =   0
       TabPanelIndex   =   0
-      TabStop         =   True
       Text            =   "Untitled"
       TextAlign       =   0
       TextColor       =   &h000000
@@ -74,15 +73,15 @@ Begin Window EnterStringWindow
       Format          =   ""
       Height          =   22
       HelpTag         =   ""
-      Index           =   -2147483648
+      Index           =   0
       Italic          =   ""
       Left            =   20
       LimitText       =   0
-      LockBottom      =   True
+      LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
-      LockTop         =   False
+      LockTop         =   True
       Mask            =   ""
       Password        =   ""
       ReadOnly        =   ""
@@ -121,7 +120,7 @@ Begin Window EnterStringWindow
       LockRight       =   True
       LockTop         =   False
       Scope           =   0
-      TabIndex        =   2
+      TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
       TextFont        =   "System"
@@ -132,7 +131,7 @@ Begin Window EnterStringWindow
       Visible         =   True
       Width           =   80
    End
-   Begin PushButton PushButton2
+   Begin PushButton cmdCancel
       AutoDeactivate  =   True
       Bold            =   ""
       ButtonStyle     =   0
@@ -152,7 +151,7 @@ Begin Window EnterStringWindow
       LockRight       =   True
       LockTop         =   False
       Scope           =   0
-      TabIndex        =   3
+      TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
       TextFont        =   "System"
@@ -167,18 +166,70 @@ End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h1
+		Protected Function AddInputFieldInstance() As TextField
+		  Dim template As TextField = txtInput( p_txtInput_UBound )
+		  
+		  Dim t As TextField = New txtInput
+		  t.Top = template.Top + template.Height + 12
+		  t.Width = template.Width
+		  t.TabIndex = template.TabIndex + 1
+		  
+		  cmdCancel.TabIndex = cmdCancel.TabIndex + 1
+		  cmdOK.TabIndex = cmdOK.TabIndex + 1
+		  
+		  Self.Height = Self.Height + t.Height + 12
+		  
+		  p_txtInput_UBound = p_txtInput_UBound + 1
+		  
+		  Return t
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		 Shared Function GetString(title As String, prompt As String, ByRef result As String) As Boolean
 		  Dim w As New EnterStringWindow
 		  
+		  w.p_allow_multiples = False
 		  w.Title = title
 		  w.lblPrompt.Text = prompt
-		  w.txtInput.Text = result
-		  w.txtInput.SelectAll
+		  w.txtInput(0).Text = result
+		  w.txtInput(0).SelectAll
 		  
 		  w.ShowModal
 		  
-		  result = w.txtInput.Text
+		  result = w.txtInput(0).Text
+		  
+		  Dim rtn_val As Boolean = w.p_button_pressed = w.cmdOK
+		  
+		  w.Close
+		  
+		  Return rtn_val
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		 Shared Function GetStrings(title As String, prompt As String, ByRef results() As String) As Boolean
+		  Dim w As New EnterStringWindow
+		  
+		  w.p_allow_multiples = True
+		  w.Title = title
+		  w.lblPrompt.Text = prompt
+		  For i As Integer = 0 To UBound( results )
+		    If i <= w.p_txtInput_UBound Then
+		      w.txtInput(i).Text = results(i)
+		    Else
+		      w.AddInputFieldInstance.Text = results(i)
+		    End If
+		  Next
+		  w.txtInput(0).SelectAll
+		  
+		  w.ShowModal
+		  
+		  ReDim results( w.p_txtInput_UBound )
+		  For i As Integer = 0 To UBound( results )
+		    results(i) = w.txtInput(i).Text
+		  Next
 		  
 		  Dim rtn_val As Boolean = w.p_button_pressed = w.cmdOK
 		  
@@ -190,13 +241,21 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub UpdateButtons()
-		  cmdOK.Enabled = txtInput.Text <> ""
+		  cmdOK.Enabled = txtInput(0).Text <> ""
 		End Sub
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h0
+		p_allow_multiples As Boolean
+	#tag EndProperty
+
 	#tag Property, Flags = &h1
 		Protected p_button_pressed As PushButton
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_txtInput_UBound As Integer = 0
 	#tag EndProperty
 
 
@@ -204,8 +263,13 @@ End
 
 #tag Events txtInput
 	#tag Event
-		Function KeyDown(Key As String) As Boolean
-		  UpdateButtons
+		Function KeyDown(index as Integer, Key As String) As Boolean
+		  If p_allow_multiples And index = p_txtInput_UBound And Asc(Key) = 9 And Not Keyboard.ShiftKey Then
+		    AddInputFieldInstance.SetFocus
+		    Return True
+		  Else
+		    UpdateButtons
+		  End If
 		End Function
 	#tag EndEvent
 #tag EndEvents
@@ -217,7 +281,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events PushButton2
+#tag Events cmdCancel
 	#tag Event
 		Sub Action()
 		  p_button_pressed = Me

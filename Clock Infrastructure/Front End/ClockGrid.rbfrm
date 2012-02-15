@@ -60,15 +60,19 @@ End
 
 	#tag Method, Flags = &h0
 		Sub AddNewVolatileClock(interactive As Boolean = True)
-		  Dim c As New VolatileClock
-		  Dim new_name As String = c.DisplayName
+		  Dim new_names(-1) As String
+		  new_names.Append "Untitled Clock"
 		  
-		  If Not interactive Or EnterStringWindow.GetString( "New Clock", "Please enter the new name for a new clock:", new_name ) Then
-		    
-		    c.DisplayName = new_name
-		    
-		    p_clockset.AddClock c
-		    
+		  If Not interactive Or EnterStringWindow.GetStrings( "New Clock", "Please enter the name for a new clock:", new_names ) Then
+		    For Each new_name As String In new_names
+		      
+		      Dim c As New VolatileClock
+		      
+		      c.DisplayName = new_name
+		      
+		      p_clockset.AddClock c
+		      
+		    Next
 		  End If
 		End Sub
 	#tag EndMethod

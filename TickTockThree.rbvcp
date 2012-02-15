@@ -1,6 +1,6 @@
 Type=Desktop
-RBProjectVersion=2011.03
-MinIDEVersion=20110100
+RBProjectVersion=2011.04
+MinIDEVersion=20070100
 Class=App;App.rbbas;&h5066F502;&h0;false
 MenuBar=MainMenu;MainMenu.rbmnu;&hF84C59A;&h0;false
 BuildSteps=Build Automation;Build Automation.rbbas;&h55C94B11;&h0;false
