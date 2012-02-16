@@ -247,7 +247,18 @@ End
 
 	#tag Method, Flags = &h1
 		Protected Sub UpdateButtons()
-		  cmdOK.Enabled = txtInput(0).Text <> ""
+		  Dim ok_should_be_enabled As Boolean = False
+		  
+		  For i As Integer = 0 To p_txtInput_UBound
+		    If txtInput(i).Text <> "" Then
+		      
+		      ok_should_be_enabled = True
+		      Exit
+		      
+		    End If
+		  Next
+		  
+		  cmdOK.Enabled = ok_should_be_enabled
 		End Sub
 	#tag EndMethod
 
