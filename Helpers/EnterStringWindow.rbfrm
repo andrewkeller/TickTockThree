@@ -264,7 +264,7 @@ End
 #tag Events txtInput
 	#tag Event
 		Function KeyDown(index as Integer, Key As String) As Boolean
-		  If p_allow_multiples And index = p_txtInput_UBound And Asc(Key) = 9 And Not Keyboard.ShiftKey Then
+		  If p_allow_multiples And index = p_txtInput_UBound And Asc(Key) = 9 And Not Keyboard.ShiftKey And Me.Text <> "" Then
 		    AddInputFieldInstance.SetFocus
 		    Return True
 		  Else
