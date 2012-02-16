@@ -122,13 +122,13 @@ Implements Clock
 		    
 		    If new_value Then
 		      
-		      App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to running."
+		      App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to running."
 		      
 		      p_autoupdate_obj_pool.NotifyClockStarted Me
 		      
 		    Else
 		      
-		      App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to name to stopped."
+		      App.Log "VolatileClock<" + Str( p_id ) + ">: changing state to stopped."
 		      
 		      p_autoupdate_obj_pool.NotifyClockStopped Me
 		      
