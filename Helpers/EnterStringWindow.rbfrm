@@ -231,6 +231,12 @@ End
 		    results(i) = w.txtInput(i).Text
 		  Next
 		  
+		  For i As Integer = UBound( results ) DownTo 0
+		    If results(i) = "" Then
+		      results.Remove i
+		    End If
+		  Next
+		  
 		  Dim rtn_val As Boolean = w.p_button_pressed = w.cmdOK
 		  
 		  w.Close
@@ -267,10 +273,13 @@ End
 		  If p_allow_multiples And index = p_txtInput_UBound And Asc(Key) = 9 And Not Keyboard.ShiftKey And Me.Text <> "" Then
 		    AddInputFieldInstance.SetFocus
 		    Return True
-		  Else
-		    UpdateButtons
 		  End If
 		End Function
+	#tag EndEvent
+	#tag Event
+		Sub TextChange(index as Integer)
+		  UpdateButtons
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events cmdOK
