@@ -322,7 +322,7 @@ End
 		    Dim avail_w, avail_w_bkup As Integer = Self.Width
 		    
 		    Dim rows, cols As Integer
-		    GetOptimalRowsAndColumnsBasedOnAspectRatio avail_w / avail_h, 1, UBound( buttons ) + 1, rows, cols
+		    GetOptimalRowsAndColumnsBasedOnAspectRatioAndSimplify avail_w / avail_h, 1, UBound( buttons ) + 1, rows, cols
 		    
 		    Dim row As Integer = 0
 		    Dim col As Integer = 0

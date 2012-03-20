@@ -73,6 +73,21 @@ Protected Module ClockGlobals
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub GetOptimalRowsAndColumnsBasedOnAspectRatioAndSimplify(area_aspect_ratio As Integer, cell_aspect_ratio As Double, cell_count As Integer, ByRef optimal_rows As Integer, ByRef optimal_cols As Integer)
+		  GetOptimalRowsAndColumnsBasedOnAspectRatio area_aspect_ratio, cell_aspect_ratio, cell_count, optimal_rows, optimal_cols
+		  
+		  // Simplifying in this case means absorbing columns into the free cells on the last row.
+		  // This has a side effect of making the aspect ratio smaller (wider).
+		  
+		  While optimal_cols > 2 And optimal_rows * (optimal_cols-1) >= cell_count
+		    
+		    optimal_cols = optimal_cols -1
+		    
+		  Wend
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GlobalClockSet() As ClockSet
 		  If p_global_clock_set Is Nil Then p_global_clock_set = New WeakClockSet
 		  
