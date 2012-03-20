@@ -27,7 +27,7 @@ Protected Module ClockGlobals
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub GetOptimalRowsAndColumns(area_aspect_ratio As Integer, cell_aspect_ratio As Double, cell_count As Integer, ByRef optimal_rows As Integer, ByRef optimal_cols As Integer)
+		Sub GetOptimalRowsAndColumnsBasedOnAspectRatio(area_aspect_ratio As Integer, cell_aspect_ratio As Double, cell_count As Integer, ByRef optimal_rows As Integer, ByRef optimal_cols As Integer)
 		  If cell_count > 1 Then
 		    
 		    Dim r, c As Integer
