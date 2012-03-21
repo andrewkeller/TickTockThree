@@ -263,8 +263,8 @@ End
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		p_allow_multiples As Boolean
+	#tag Property, Flags = &h1
+		Protected p_allow_multiples As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
