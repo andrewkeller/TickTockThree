@@ -209,8 +209,10 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function GetStrings(title As String, prompt As String, ByRef results() As String) As Boolean
+		 Shared Function GetStrings(title As String, prompt As String, ByRef results() As String, ByRef important_index As Integer) As Boolean
 		  Dim w As New EnterStringWindow
+		  
+		  // Load up the window:
 		  
 		  w.p_allow_multiples = True
 		  w.Title = title
@@ -222,9 +224,19 @@ End
 		      w.AddInputFieldInstance.Text = results(i)
 		    End If
 		  Next
-		  w.txtInput(0).SelectAll
+		  If important_index < 0 Then
+		    important_index = 0
+		  ElseIf important_index > w.p_txtInput_UBound Then
+		    important_index = w.p_txtInput_UBound
+		  End If
+		  w.txtInput(important_index).SetFocus
+		  w.txtInput(important_index).SelectAll
+		  
+		  // Show the window:
 		  
 		  w.ShowModal
+		  
+		  // Gather the results:
 		  
 		  ReDim results( w.p_txtInput_UBound )
 		  For i As Integer = 0 To UBound( results )
@@ -237,10 +249,17 @@ End
 		    End If
 		  Next
 		  
+		  If w.p_user_utilized_alternate_click_on_submission Then
+		    important_index = w.p_txtInput_last_focus_index
+		  Else
+		    important_index = -1
+		  End If
+		  
 		  Dim rtn_val As Boolean = w.p_button_pressed = w.cmdOK
 		  
-		  w.Close
+		  // Return the results:
 		  
+		  w.Close
 		  Return rtn_val
 		End Function
 	#tag EndMethod
@@ -272,7 +291,19 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected p_txtInput_current_focus_index As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_txtInput_last_focus_index As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected p_txtInput_UBound As Integer = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected p_user_utilized_alternate_click_on_submission As Boolean
 	#tag EndProperty
 
 
@@ -292,11 +323,23 @@ End
 		  UpdateButtons
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub GotFocus(index as Integer)
+		  p_txtInput_current_focus_index = index
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub LostFocus(index as Integer)
+		  p_txtInput_current_focus_index = -1
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events cmdOK
 	#tag Event
 		Sub Action()
 		  p_button_pressed = Me
+		  p_user_utilized_alternate_click_on_submission = Keyboard.ShiftKey
+		  p_txtInput_last_focus_index = p_txtInput_current_focus_index
 		  Self.Hide
 		End Sub
 	#tag EndEvent
@@ -305,6 +348,8 @@ End
 	#tag Event
 		Sub Action()
 		  p_button_pressed = Me
+		  p_user_utilized_alternate_click_on_submission = Keyboard.ShiftKey
+		  p_txtInput_last_focus_index = p_txtInput_current_focus_index
 		  Self.Hide
 		End Sub
 	#tag EndEvent

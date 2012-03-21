@@ -62,15 +62,19 @@ End
 		Sub AddNewVolatileClock(interactive As Boolean = True)
 		  Dim new_names(-1) As String
 		  new_names.Append "Untitled Clock"
+		  Dim important_index As Integer = -1
 		  
-		  If Not interactive Or EnterStringWindow.GetStrings( "New Clock", "Please enter the name for a new clock:", new_names ) Then
-		    For Each new_name As String In new_names
+		  If Not interactive Or EnterStringWindow.GetStrings( "New Clock", "Please enter the name for a new clock:", new_names, important_index ) Then
+		    For i As Integer = 0 To UBound( new_names )
+		      Dim new_name As String = new_names( i )
 		      
 		      Dim c As New VolatileClock
 		      
 		      c.DisplayName = new_name
 		      
 		      p_clockset.AddClock c
+		      
+		      If important_index = i Then c.Start
 		      
 		    Next
 		  End If
