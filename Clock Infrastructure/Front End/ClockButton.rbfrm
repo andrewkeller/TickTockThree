@@ -143,6 +143,21 @@ End
 	#tag EndEvent
 
 
+	#tag Method, Flags = &h1
+		Protected Function ClkDesc() As String
+		  Dim c As Clock = Self.Clock
+		  If c Is Nil Then
+		    
+		    Return "was showing Clock<" + Str( p_severed_clock_id ) + ">"
+		    
+		  Else
+		    
+		    Return "is showing Clock<" + Str( c.ObjectID ) + ">"
+		    
+		  End If
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function Clock() As Clock
 		  If Not ( p_clock_strongref Is Nil ) Then
@@ -212,6 +227,13 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Close()
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: received Close instruction (" + ClkDesc + ")."
+		  Super.Close
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Constructor()
 		  p_id = GetUniqueIndexKFS
 		  Super.Constructor
@@ -240,16 +262,7 @@ End
 
 	#tag Method, Flags = &h0
 		Attributes( Hidden = True )  Sub Destructor()
-		  Dim c As Clock = Self.Clock
-		  If c Is Nil Then
-		    
-		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( p_severed_clock_id ) + ">)."
-		    
-		  Else
-		    
-		    App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (was showing Clock<" + Str( c.ObjectID ) + ">)."
-		    
-		  End If
+		  App.Log "ClockButton<" + Str( Self.ObjectID ) + ">: deallocating (" + ClkDesc + ")."
 		End Sub
 	#tag EndMethod
 
